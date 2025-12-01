@@ -1,27 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <title>To-GoLing.app | Tap and Log Your Life</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="To-GoLing.app is an NFC keyring + app that lets you capture your feelings and locations with a single tap."
+    content="To-GoLing.app은 NFC 키링과 앱을 연결해, 한 번의 태그로 지금 이 순간의 감정과 장소를 기록하게 해 줍니다."
   />
   <link rel="canonical" href="https://to-goling.app" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;500;700&family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
     :root {
-      /* 메인 팔레트 – 프레젠테이션 느낌 */
-      --bg: #f5f2ea;          /* 전체 배경 – 아이보리 */
-      --bg-soft: #ffffff;      /* 카드/섹션 배경 */
-      --accent: #4f81bd;       /* 메인 파랑 */
-      --accent-soft: #e4edf7;  /* 파랑 연한 버전 */
-      --accent-strong: #f79646;/* 포인트 오렌지 */
-      --text-main: #1f2933;    /* 진한 글자 */
-      --text-sub: #6b7280;     /* 서브 텍스트 */
-      --border-soft: #e5e7eb;  /* 연한 테두리 */
-      --card-radius: 16px;
-      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
+      /* Y2K palette */
+      --bg-top: #bde1ff;
+      --bg-mid: #dff0ff;
+      --bg-bottom: #f7fbff;
+      --accent: #74b8ff;
+      --accent-strong: #ff9bff;
+      --accent-neon: #8df2ff;
+      --text-main: #0f172a;
+      --text-sub: #64748b;
+      --card-radius: 20px;
+      --glass-bg: rgba(255, 255, 255, 0.18);
+      --glass-border: rgba(255, 255, 255, 0.7);
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.22);
     }
 
     * {
@@ -31,12 +48,17 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: radial-gradient(circle at top, #ffffff 0, #f5f2ea 55%, #f1ede4 100%);
+      min-height: 100vh;
+      font-family: 'Black Han Sans', sans-serif !important;
+      letter-spacing: -0.02em;
       color: var(--text-main);
       line-height: 1.6;
-      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.9) 0, transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.85) 0, transparent 48%),
+        linear-gradient(to bottom, var(--bg-top), var(--bg-mid) 45%, var(--bg-bottom));
+      background-attachment: fixed;
+      overflow-x: hidden;
     }
 
     a {
@@ -45,9 +67,69 @@
     }
 
     .page {
-      max-width: 1080px;
+      max-width: 1160px;
       margin: 0 auto;
       padding: 20px 18px 60px;
+      position: relative;
+    }
+
+    /* floating chrome blobs (pure CSS) */
+    .blob {
+      position: fixed;
+      z-index: -1;
+      border-radius: 999px;
+      filter: blur(0.2px) drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+      background:
+        radial-gradient(circle at 20% 20%, #ffffff 0, #f0f4ff 25%, transparent 55%),
+        radial-gradient(circle at 80% 30%, #ffffff 0, #c9d5ff 35%, transparent 60%),
+        radial-gradient(circle at 50% 80%, #ffffff 0, #c0c4ce 30%, #a0a3ad 60%);
+      opacity: 0.85;
+      animation: float 11s ease-in-out infinite alternate;
+    }
+
+    .blob.blob-left {
+      width: 260px;
+      height: 260px;
+      top: 60px;
+      left: -120px;
+    }
+
+    .blob.blob-right {
+      width: 260px;
+      height: 260px;
+      top: 260px;
+      right: -130px;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+      }
+      50% {
+        transform: translate3d(0, 20px, 0) rotate(4deg);
+      }
+      100% {
+        transform: translate3d(0, -6px, 0) rotate(-2deg);
+      }
+    }
+
+    /* 스티커 공통 */
+    .sticker {
+      position: absolute;
+      pointer-events: none;
+      filter:
+        drop-shadow(0 8px 18px rgba(15, 23, 42, 0.45))
+        drop-shadow(0 0 10px rgba(255, 255, 255, 0.85));
+      animation: sticker-float 9s ease-in-out infinite alternate;
+    }
+    .sticker.slow { animation-duration: 13s; }
+    .sticker.fast { animation-duration: 7s; }
+
+    @keyframes sticker-float {
+      0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+      50%  { transform: translate3d(6px, -8px, 0) rotate(3deg) scale(1.03); }
+      100% { transform: translate3d(-4px, 6px, 0) rotate(-2deg) scale(0.98); }
     }
 
     /* NAV */
@@ -55,18 +137,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 4px 16px;
+      padding: 10px 12px;
       position: sticky;
       top: 0;
       z-index: 20;
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(18px);
       background: linear-gradient(
         to bottom,
-        rgba(255, 255, 255, 0.92),
-        rgba(255, 255, 255, 0.88),
+        rgba(171, 210, 255, 0.9),
+        rgba(207, 229, 255, 0.7),
         transparent
       );
-      border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 999px;
+      margin-bottom: 20px;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.25);
     }
 
     .nav-left {
@@ -75,19 +160,25 @@
       gap: 10px;
     }
 
-    .logo-dot {
-      width: 26px;
-      height: 26px;
+    .logo-orb {
+      width: 34px;
+      height: 34px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #ffffff, #4f81bd);
-      box-shadow: 0 0 16px rgba(79, 129, 189, 0.7);
+      background:
+        radial-gradient(circle at 20% 10%, #ffffff 0, #f0f4ff 35%, transparent 60%),
+        radial-gradient(circle at 80% 80%, #4b9dff 0, #2553ff 55%, #0b1c4a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.7),
+        0 0 18px rgba(120, 190, 255, 0.9);
     }
 
     .nav-title-main {
-      font-weight: 700;
-      font-size: 18px;
-      letter-spacing: 0.04em;
-      color: var(--accent);
+      font-family: "Orbitron", sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
     .nav-title-sub {
@@ -99,31 +190,35 @@
 
     .nav-links {
       display: flex;
-      gap: 16px;
-      font-size: 13px;
-      color: var(--text-sub);
+      gap: 14px;
+      font-size: 11px;
+      font-family: "Press Start 2P", system-ui;
+      text-transform: uppercase;
     }
 
     .nav-links a {
-      padding: 4px 8px;
+      padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid transparent;
-      transition: all 0.18s ease;
-      cursor: pointer;
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
+      transition: all 0.17s ease;
     }
 
     .nav-links a:hover {
-      border-color: var(--border-soft);
-      color: var(--accent);
-      background: rgba(228, 237, 247, 0.7);
+      border-color: rgba(255, 255, 255, 0.9);
+      background: rgba(10, 132, 255, 0.15);
+      color: #0b1120;
+      box-shadow: 0 0 18px rgba(93, 180, 255, 0.9);
     }
 
     /* HERO */
     .hero {
+      position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
-      gap: 26px;
-      padding: 26px 4px 32px;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.3fr);
+      gap: 32px;
+      padding: 60px 10px 40px;
       align-items: center;
     }
 
@@ -137,103 +232,127 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 5px 12px;
+      padding: 7px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.9),
+        rgba(211, 227, 255, 0.9)
+      );
       font-size: 11px;
-      color: var(--text-sub);
+      font-family: "Press Start 2P", system-ui;
+      color: #1e293b;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.13em;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
     }
 
     .hero-pill-dot {
-      width: 7px;
-      height: 7px;
+      width: 9px;
+      height: 9px;
       border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+      background: radial-gradient(circle at 30% 30%, #ffffff, #22c55e);
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
     }
 
     .hero-title {
-      font-size: clamp(32px, 4vw, 40px);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      color: #1f2933;
-    }
-
-    .hero-title span {
-      background: linear-gradient(120deg, #4f81bd, #f79646);
+      font-family: 'Black Han Sans', sans-serif !important;
+      font-weight: 400;
+      font-size: clamp(48px, 7vw, 82px);
+      line-height: 0.9;
+      text-transform: uppercase;
+      background: linear-gradient(
+        135deg,
+        #ffffff 0%,
+        #d0e6ff 20%,
+        #8ec5ff 40%,
+        #ffb5ff 80%,
+        #ffffff
+      );
       -webkit-background-clip: text;
       color: transparent;
+      filter: drop-shadow(0 0 22px rgba(255,255,255,0.7));
     }
 
     .hero-sub {
-      color: var(--text-sub);
-      font-size: 14px;
-      max-width: 520px;
+      max-width: 600px;
+      font-size: 18px;
+      color: #1f2937;
+      background: rgba(255,255,255,0.7);
+      padding: 14px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
 
     .hero-cta-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 8px;
       align-items: center;
+      margin-top: 8px;
     }
 
     .btn-primary {
-      padding: 9px 18px;
+      padding: 10px 20px;
       border-radius: 999px;
       border: none;
-      background: linear-gradient(135deg, #f79646, #c0504d);
-      color: white;
+      background: linear-gradient(135deg, #ffb7ff, #8cf0ff);
+      color: #111827;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 10px 22px rgba(192, 80, 77, 0.35);
-      transition: transform 0.12s ease, box-shadow 0.12s ease,
-        filter 0.12s ease;
+      font-family: "Space Grotesk", system-ui;
+      box-shadow:
+        0 14px 30px rgba(236, 72, 153, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.9);
+      transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
     }
 
     .btn-primary:hover {
-      transform: translateY(-1px);
+      transform: translateY(-1px) scale(1.01);
       filter: brightness(1.03);
-      box-shadow: 0 14px 30px rgba(192, 80, 77, 0.45);
+      box-shadow:
+        0 20px 40px rgba(236, 72, 153, 0.75),
+        0 0 30px rgba(56, 189, 248, 0.8);
     }
 
     .btn-ghost {
-      padding: 8px 16px;
+      padding: 9px 18px;
       border-radius: 999px;
-      border: 1px solid var(--border-soft);
-      background: rgba(255, 255, 255, 0.9);
-      color: var(--text-sub);
-      font-size: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      background: rgba(15, 23, 42, 0.15);
+      color: #f9fafb;
+      font-size: 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.18s ease;
+      font-family: "Press Start 2P", system-ui;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.4);
+      transition: all 0.16s ease;
+    }
+
+    .btn-ghost span {
+      font-size: 14px;
     }
 
     .btn-ghost:hover {
-      color: var(--accent);
-      border-color: rgba(148, 163, 184, 0.9);
-      background: #ffffff;
+      background: rgba(15, 23, 42, 0.85);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.85);
     }
 
-    .hero-cta-note {
-      font-size: 11px;
-      color: var(--text-sub);
-    }
-
+    /* HERO 오른쪽 카드 */
     .hero-right {
-      border-radius: 22px;
-      background: var(--bg-soft);
-      border: 1px solid var(--border-soft);
+      border-radius: 30px;
+      background: radial-gradient(circle at 20% 0%, #ffffff, #eaf1ff 40%, #c2d6ff 100%);
+      border: 1px solid rgba(255, 255, 255, 0.9);
       box-shadow: var(--shadow-soft);
-      padding: 16px 16px 18px;
+      padding: 16px 16px 20px;
       position: relative;
       overflow: hidden;
     }
@@ -242,76 +361,91 @@
       position: absolute;
       top: 14px;
       right: 14px;
-      font-size: 11px;
-      padding: 4px 10px;
+      font-size: 10px;
+      padding: 5px 12px;
       border-radius: 999px;
-      background: rgba(228, 237, 247, 0.95);
+      background: rgba(15, 23, 42, 0.88);
       border: 1px solid rgba(148, 163, 184, 0.8);
-      color: var(--accent);
-      font-weight: 500;
+      color: #e5e7eb;
+      font-family: "Press Start 2P", system-ui;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
     }
 
     .hero-hardware {
       display: flex;
       gap: 18px;
       align-items: center;
-      margin-top: 14px;
+      margin-top: 22px;
     }
 
     .ring-visual {
-      width: 104px;
-      height: 104px;
+      width: 130px;
+      height: 130px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #ffffff, #4f81bd);
-      box-shadow: 0 0 32px rgba(79, 129, 189, 0.6);
       position: relative;
+      background:
+        radial-gradient(circle at 20% 15%, #ffffff 0, #f6f6f6 25%, transparent 55%),
+        radial-gradient(circle at 80% 80%, #d0d0d0 0, #a7a7a7 40%, #707070 80%);
+      box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.85),
+        0 14px 40px rgba(15, 23, 42, 0.55);
+      animation: float 6.5s ease-in-out infinite alternate;
     }
 
     .ring-visual-inner {
       position: absolute;
       inset: 18px;
       border-radius: 999px;
-      border: 2px solid rgba(148, 163, 184, 0.6);
-      background: radial-gradient(circle at 30% 30%, #f5f2ea, #ffffff);
+      background:
+        radial-gradient(circle at 15% 10%, #ffffff 0, #f2f4ff 30%, transparent 60%),
+        radial-gradient(circle at 80% 90%, #c5d3ff 0, #96a3bf 45%, #5a6b97 90%);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: inset 0 0 12px rgba(15, 23, 42, 0.55);
     }
 
     .hero-hardware-text h3 {
       font-size: 15px;
       margin-bottom: 4px;
       color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-family: "Press Start 2P", system-ui;
     }
 
     .hero-hardware-text p {
       font-size: 12px;
-      color: var(--text-sub);
+      color: var(--text-main);
     }
 
     .hero-tagline {
-      margin-top: 14px;
-      padding: 10px 10px;
-      border-radius: 14px;
-      background: var(--accent-soft);
-      border: 1px dashed rgba(148, 163, 184, 0.9);
+      margin-top: 18px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid rgba(148, 163, 184, 0.9);
       font-size: 11px;
-      color: var(--text-sub);
+      color: #e5e7eb;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.75);
     }
 
     .hero-tagline strong {
-      color: var(--accent-strong);
+      color: var(--accent-neon);
     }
 
-    /* SECTIONS */
+    /* SECTION STRUCTURE */
     section {
-      margin-top: 32px;
+      margin-top: 40px;
       padding: 0 4px;
     }
 
     .section-label {
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.2em;
       color: var(--accent);
       margin-bottom: 6px;
+      font-family: "Press Start 2P", system-ui;
     }
 
     .section-title-row {
@@ -319,12 +453,14 @@
       justify-content: space-between;
       gap: 10px;
       align-items: flex-end;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .section-title {
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 32px;
+      font-family: 'Black Han Sans', sans-serif !important;
+      letter-spacing: -0.02em;
+      color: #0b1020;
     }
 
     .section-sub {
@@ -332,52 +468,58 @@
       color: var(--text-sub);
       max-width: 360px;
       text-align: right;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
     }
 
     .card-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+      gap: 16px;
     }
 
     .card-grid-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      gap: 16px;
     }
 
     .card {
       border-radius: var(--card-radius);
-      border: 1px solid var(--border-soft);
-      background: var(--bg-soft);
-      padding: 12px 13px 13px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      padding: 14px 15px 16px;
       box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(16px);
     }
 
     .card-header-label {
-      font-size: 11px;
-      color: var(--accent);
+      font-size: 10px;
+      color: var(--accent-strong);
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 6px;
+      letter-spacing: 0.22em;
+      margin-bottom: 8px;
+      font-family: "Press Start 2P", system-ui;
     }
 
     .card-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       margin-bottom: 6px;
     }
 
     .card-body {
       font-size: 12px;
-      color: var(--text-sub);
+      color: var(--text-main);
     }
 
     .card-list {
       margin-top: 6px;
-      padding-left: 14px;
+      padding-left: 16px;
       font-size: 12px;
-      color: var(--text-sub);
+      color: var(--text-main);
     }
 
     .card-list li {
@@ -387,45 +529,50 @@
     /* TIMELINE / FOOTER */
     .timeline {
       border-radius: var(--card-radius);
-      border: 1px solid var(--border-soft);
+      border: 1px solid var(--glass-border);
       padding: 12px 14px;
-      background: var(--bg-soft);
+      background: var(--glass-bg);
       box-shadow: var(--shadow-soft);
       font-size: 12px;
-      color: var(--text-sub);
+      color: var(--text-main);
+      backdrop-filter: blur(16px);
     }
 
     .timeline-row {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .timeline-dot {
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border-radius: 999px;
-      background: var(--accent);
+      background: radial-gradient(circle at 30% 30%, #ffffff, var(--accent));
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.9);
     }
 
     .timeline-label {
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.16em;
       color: var(--text-sub);
+      font-family: "Press Start 2P", system-ui;
     }
 
     .footer {
-      margin-top: 36px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(209, 213, 219, 0.9);
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.9);
       font-size: 11px;
-      color: var(--text-sub);
+      color: var(--text-main);
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 10px;
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 16px 16px 0 0;
     }
 
     .footer a {
@@ -435,13 +582,14 @@
     }
 
     /* RESPONSIVE */
-    @media (max-width: 840px) {
+    @media (max-width: 900px) {
       .hero {
         grid-template-columns: minmax(0, 1fr);
       }
 
       .hero-right {
         order: -1;
+        margin-bottom: 18px;
       }
 
       .card-grid-3 {
@@ -461,18 +609,30 @@
         text-align: left;
       }
 
+      .nav {
+        border-radius: 18px;
+      }
+
       .nav-links {
         display: none;
+      }
+
+      .hero-sub {
+        max-width: none;
       }
     }
   </style>
 </head>
 <body>
+  <!-- floating blobs -->
+  <div class="blob blob-left"></div>
+  <div class="blob blob-right"></div>
+
   <div class="page">
     <!-- NAV -->
     <header class="nav">
       <div class="nav-left">
-        <div class="logo-dot"></div>
+        <div class="logo-orb"></div>
         <div>
           <div class="nav-title-main">To-GoLing</div>
           <div class="nav-title-sub">to-goling.app • Team 12V</div>
@@ -481,8 +641,8 @@
       <nav class="nav-links">
         <a href="#problem">Problem</a>
         <a href="#solution">Product</a>
-        <a href="#how-it-works">How it Works</a>
-        <a href="#about">About</a>
+        <a href="#how-it-works">Flow</a>
+        <a href="#about">Team</a>
       </nav>
     </header>
 
@@ -494,26 +654,26 @@
             <span class="hero-pill-dot"></span>
             Location-based life log • NFC keyring
           </div>
+
           <h1 class="hero-title">
-            Tap once.<br />
-            <span>Capture the moment</span> before it disappears.
+            TO-GOLING<br />
+            TAP & LOG YOUR LIFE
           </h1>
+
           <p class="hero-sub">
-            To-GoLing.app connects a physical NFC keyring with a smart diary app.
-            Tag your phone, and we instantly turn your current place, time, and
-            feelings into a tiny story – without breaking your flow.
+            NFC 키링을 스마트폰에 태그하면<br />
+            지금 이 순간의 감정·장소·시간이 바로 기록됩니다.<br />
+            번거로움 없이, 느낌이 사라지기 전에.
           </p>
+
           <div class="hero-cta-row">
-            <button class="btn-primary" onclick="document.getElementById('solution').scrollIntoView({behavior:'smooth'})">
-              See how it works →
+            <button class="btn-primary" onclick="document.getElementById('solution').scrollIntoView({ behavior:'smooth' })">
+              어떻게 작동하나요 →
             </button>
-            <button class="btn-ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
-              Learn about Team 12V
-              <span>☆</span>
+
+            <button class="btn-ghost" onclick="document.getElementById('about').scrollIntoView({ behavior:'smooth' })">
+              팀 12V 소개 ☆
             </button>
-            <div class="hero-cta-note">
-              Prototype project • hosted at to-goling.app
-            </div>
           </div>
         </div>
 
@@ -525,7 +685,7 @@
               <div class="ring-visual-inner"></div>
             </div>
             <div class="hero-hardware-text">
-              <h3>To-GoLing NFC Keyring</h3>
+              <h3>To-GoRing NFC Keyring</h3>
               <p>
                 A small, always-with-you keyring that becomes your “record”
                 button. Tap on your phone to start a mini diary in seconds.
@@ -539,6 +699,18 @@
             already faded. We remove the unlock–open–type friction and keep the
             emotion of “right now”.
           </div>
+
+          <!-- 크롬 블랍 스티커 (원하면 이미지 넣기) -->
+          <!--
+          <img src="/stickers/chrome-blob-1.png"
+               alt=""
+               class="sticker fast"
+               style="width:160px; top:-40px; left:-60px;">
+          <img src="/stickers/chrome-blob-2.png"
+               alt=""
+               class="sticker slow"
+               style="width:120px; bottom:-50px; right:-50px;">
+          -->
         </aside>
       </section>
 
@@ -558,7 +730,7 @@
             <div class="card-header-label">Friction</div>
             <h3 class="card-title">Too many steps to record</h3>
             <p class="card-body">
-              Unlock phone → find app → open → type.  
+              Unlock phone → find app → open → type.
               That tiny delay is enough for people to give up recording their day.
             </p>
           </article>
@@ -753,7 +925,7 @@
   </div>
 
   <script>
-    // JS는 지금 구조 그대로 두면 돼요.
+    // no extra JS needed right now :)
   </script>
 </body>
 </html>
