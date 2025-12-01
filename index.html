@@ -1,22 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <title>To-GoLing.app | Tap and Log Your Life</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta
-    name="description"
-    content="To-GoLing.app은 NFC 키링과 앱을 연결해, 한 번의 태그로 지금 이 순간의 감정과 장소를 기록하게 해 줍니다."
-  />
-  <link rel="canonical" href="https://to-goling.app" />
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-GoLing.app | Tap & Log Your Life</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Space+Grotesk:wght@400;500;700&family=Press+Start+2P&display=swap"
-    rel="stylesheet"
-  />
+  <!-- Black Han Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -25,907 +16,607 @@
   />
 
   <style>
-    :root {
-      /* Y2K palette */
-      --bg-top: #bde1ff;
-      --bg-mid: #dff0ff;
-      --bg-bottom: #f7fbff;
-      --accent: #74b8ff;
-      --accent-strong: #ff9bff;
-      --accent-neon: #8df2ff;
-      --text-main: #0f172a;
-      --text-sub: #64748b;
-      --card-radius: 20px;
-      --glass-bg: rgba(255, 255, 255, 0.18);
-      --glass-border: rgba(255, 255, 255, 0.7);
-      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.22);
-    }
-
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
     }
 
     body {
-      min-height: 100vh;
-      font-family: 'Black Han Sans', sans-serif !important;
-      letter-spacing: -0.02em;
-      color: var(--text-main);
-      line-height: 1.6;
+      font-family: 'Black Han Sans', system-ui, -apple-system, sans-serif;
+      /* 하늘+그라데이션 배경 */
       background:
         radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.9) 0, transparent 45%),
         radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.85) 0, transparent 48%),
-        linear-gradient(to bottom, var(--bg-top), var(--bg-mid) 45%, var(--bg-bottom));
+        linear-gradient(to bottom, #bde1ff, #dff0ff 45%, #f7fbff);
       background-attachment: fixed;
-      overflow-x: hidden;
+      color: #0f172a;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .page {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 20px 18px 60px;
-      position: relative;
-    }
-
-    /* floating chrome blobs (pure CSS) */
-    .blob {
-      position: fixed;
-      z-index: -1;
-      border-radius: 999px;
-      filter: blur(0.2px) drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
-      background:
-        radial-gradient(circle at 20% 20%, #ffffff 0, #f0f4ff 25%, transparent 55%),
-        radial-gradient(circle at 80% 30%, #ffffff 0, #c9d5ff 35%, transparent 60%),
-        radial-gradient(circle at 50% 80%, #ffffff 0, #c0c4ce 30%, #a0a3ad 60%);
-      opacity: 0.85;
-      animation: float 11s ease-in-out infinite alternate;
-    }
-
-    .blob.blob-left {
-      width: 260px;
-      height: 260px;
-      top: 60px;
-      left: -120px;
-    }
-
-    .blob.blob-right {
-      width: 260px;
-      height: 260px;
-      top: 260px;
-      right: -130px;
-      animation-delay: 2s;
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes float {
-      0% {
-        transform: translate3d(0, 0, 0) rotate(0deg);
+      0%, 100% {
+        transform: translateY(0px);
       }
       50% {
-        transform: translate3d(0, 20px, 0) rotate(4deg);
-      }
-      100% {
-        transform: translate3d(0, -6px, 0) rotate(-2deg);
+        transform: translateY(-20px);
       }
     }
 
-    /* 스티커 공통 */
-    .sticker {
-      position: absolute;
-      pointer-events: none;
-      filter:
-        drop-shadow(0 8px 18px rgba(15, 23, 42, 0.45))
-        drop-shadow(0 0 10px rgba(255, 255, 255, 0.85));
-      animation: sticker-float 9s ease-in-out infinite alternate;
-    }
-    .sticker.slow { animation-duration: 13s; }
-    .sticker.fast { animation-duration: 7s; }
-
-    @keyframes sticker-float {
-      0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
-      50%  { transform: translate3d(6px, -8px, 0) rotate(3deg) scale(1.03); }
-      100% { transform: translate3d(-4px, 6px, 0) rotate(-2deg) scale(0.98); }
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
     }
 
-    /* NAV */
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(
-        to bottom,
-        rgba(171, 210, 255, 0.9),
-        rgba(207, 229, 255, 0.7),
-        transparent
-      );
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 999px;
-      margin-bottom: 20px;
-      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.25);
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
     }
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-orb {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 20% 10%, #ffffff 0, #f0f4ff 35%, transparent 60%),
-        radial-gradient(circle at 80% 80%, #4b9dff 0, #2553ff 55%, #0b1c4a 100%);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      box-shadow:
-        0 0 0 2px rgba(255, 255, 255, 0.7),
-        0 0 18px rgba(120, 190, 255, 0.9);
-    }
-
-    .nav-title-main {
-      font-family: "Orbitron", sans-serif;
-      font-weight: 600;
-      font-size: 17px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .nav-title-sub {
-      font-size: 11px;
-      color: var(--text-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 14px;
-      font-size: 11px;
-      font-family: "Press Start 2P", system-ui;
-      text-transform: uppercase;
-    }
-
-    .nav-links a {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      background: rgba(255, 255, 255, 0.18);
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
-      transition: all 0.17s ease;
-    }
-
-    .nav-links a:hover {
-      border-color: rgba(255, 255, 255, 0.9);
-      background: rgba(10, 132, 255, 0.15);
-      color: #0b1120;
-      box-shadow: 0 0 18px rgba(93, 180, 255, 0.9);
-    }
-
-    /* HERO */
-    .hero {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.3fr);
-      gap: 32px;
-      padding: 60px 10px 40px;
-      align-items: center;
-    }
-
-    .hero-left {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.9),
-        rgba(211, 227, 255, 0.9)
-      );
-      font-size: 11px;
-      font-family: "Press Start 2P", system-ui;
-      color: #1e293b;
-      text-transform: uppercase;
-      letter-spacing: 0.13em;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
-    }
-
-    .hero-pill-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #ffffff, #22c55e);
-      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
-    }
-
-    .hero-title {
-      font-family: 'Black Han Sans', sans-serif !important;
-      font-weight: 400;
-      font-size: clamp(48px, 7vw, 82px);
-      line-height: 0.9;
-      text-transform: uppercase;
-      background: linear-gradient(
-        135deg,
-        #ffffff 0%,
-        #d0e6ff 20%,
-        #8ec5ff 40%,
-        #ffb5ff 80%,
-        #ffffff
-      );
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #8ec5ff 40%, #ffb5ff 80%, #ffffff);
       -webkit-background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 0 22px rgba(255,255,255,0.7));
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .hero-sub {
-      max-width: 600px;
-      font-size: 18px;
-      color: #1f2937;
-      background: rgba(255,255,255,0.7);
-      padding: 14px 20px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.9);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
     }
 
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      margin-top: 8px;
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .btn-primary {
-      padding: 10px 20px;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, #ffb7ff, #8cf0ff);
-      color: #111827;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: "Space Grotesk", system-ui;
-      box-shadow:
-        0 14px 30px rgba(236, 72, 153, 0.55),
-        0 0 0 1px rgba(255, 255, 255, 0.9);
-      transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px) scale(1.01);
-      filter: brightness(1.03);
-      box-shadow:
-        0 20px 40px rgba(236, 72, 153, 0.75),
-        0 0 30px rgba(56, 189, 248, 0.8);
-    }
-
-    .btn-ghost {
-      padding: 9px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      background: rgba(15, 23, 42, 0.15);
-      color: #f9fafb;
-      font-size: 12px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: "Press Start 2P", system-ui;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.4);
-      transition: all 0.16s ease;
-    }
-
-    .btn-ghost span {
-      font-size: 14px;
-    }
-
-    .btn-ghost:hover {
-      background: rgba(15, 23, 42, 0.85);
-      transform: translateY(-1px);
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.85);
-    }
-
-    /* HERO 오른쪽 카드 */
-    .hero-right {
-      border-radius: 30px;
-      background: radial-gradient(circle at 20% 0%, #ffffff, #eaf1ff 40%, #c2d6ff 100%);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      box-shadow: var(--shadow-soft);
-      padding: 16px 16px 20px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-badge {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      font-size: 10px;
-      padding: 5px 12px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      color: #e5e7eb;
-      font-family: "Press Start 2P", system-ui;
-      text-transform: uppercase;
-      letter-spacing: 0.13em;
-    }
-
-    .hero-hardware {
-      display: flex;
-      gap: 18px;
-      align-items: center;
-      margin-top: 22px;
-    }
-
-    .ring-visual {
-      width: 130px;
-      height: 130px;
-      border-radius: 999px;
-      position: relative;
-      background:
-        radial-gradient(circle at 20% 15%, #ffffff 0, #f6f6f6 25%, transparent 55%),
-        radial-gradient(circle at 80% 80%, #d0d0d0 0, #a7a7a7 40%, #707070 80%);
-      box-shadow:
-        0 0 0 2px rgba(255, 255, 255, 0.85),
-        0 14px 40px rgba(15, 23, 42, 0.55);
-      animation: float 6.5s ease-in-out infinite alternate;
-    }
-
-    .ring-visual-inner {
-      position: absolute;
-      inset: 18px;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 15% 10%, #ffffff 0, #f2f4ff 30%, transparent 60%),
-        radial-gradient(circle at 80% 90%, #c5d3ff 0, #96a3bf 45%, #5a6b97 90%);
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      box-shadow: inset 0 0 12px rgba(15, 23, 42, 0.55);
-    }
-
-    .hero-hardware-text h3 {
-      font-size: 15px;
-      margin-bottom: 4px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-family: "Press Start 2P", system-ui;
-    }
-
-    .hero-hardware-text p {
-      font-size: 12px;
-      color: var(--text-main);
-    }
-
-    .hero-tagline {
-      margin-top: 18px;
-      padding: 12px 12px;
-      border-radius: 16px;
-      background: rgba(15, 23, 42, 0.86);
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      font-size: 11px;
-      color: #e5e7eb;
-      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.75);
-    }
-
-    .hero-tagline strong {
-      color: var(--accent-neon);
-    }
-
-    /* SECTION STRUCTURE */
-    section {
-      margin-top: 40px;
-      padding: 0 4px;
-    }
-
-    .section-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-      margin-bottom: 6px;
-      font-family: "Press Start 2P", system-ui;
-    }
-
-    .section-title-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: flex-end;
-      margin-bottom: 16px;
-    }
-
-    .section-title {
-      font-size: 32px;
-      font-family: 'Black Han Sans', sans-serif !important;
-      letter-spacing: -0.02em;
-      color: #0b1020;
-    }
-
-    .section-sub {
-      font-size: 12px;
-      color: var(--text-sub);
-      max-width: 360px;
-      text-align: right;
-      background: rgba(255, 255, 255, 0.6);
-      padding: 8px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.9);
-    }
-
-    .card-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .card-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      border-radius: var(--card-radius);
-      border: 1px solid var(--glass-border);
-      background: var(--glass-bg);
-      padding: 14px 15px 16px;
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(16px);
-    }
-
-    .card-header-label {
-      font-size: 10px;
-      color: var(--accent-strong);
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      margin-bottom: 8px;
-      font-family: "Press Start 2P", system-ui;
-    }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .card-body {
-      font-size: 12px;
-      color: var(--text-main);
-    }
-
-    .card-list {
-      margin-top: 6px;
-      padding-left: 16px;
-      font-size: 12px;
-      color: var(--text-main);
-    }
-
-    .card-list li {
-      margin-bottom: 4px;
-    }
-
-    /* TIMELINE / FOOTER */
-    .timeline {
-      border-radius: var(--card-radius);
-      border: 1px solid var(--glass-border);
-      padding: 12px 14px;
-      background: var(--glass-bg);
-      box-shadow: var(--shadow-soft);
-      font-size: 12px;
-      color: var(--text-main);
-      backdrop-filter: blur(16px);
-    }
-
-    .timeline-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .timeline-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #ffffff, var(--accent));
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.9);
-    }
-
-    .timeline-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-sub);
-      font-family: "Press Start 2P", system-ui;
-    }
-
-    .footer {
-      margin-top: 40px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.9);
-      font-size: 11px;
-      color: var(--text-main);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.55);
-      border-radius: 16px 16px 0 0;
-    }
-
-    .footer a {
-      text-decoration: underline;
-      text-decoration-style: dotted;
-      text-underline-offset: 3px;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .hero-right {
-        order: -1;
-        margin-bottom: 18px;
-      }
-
-      .card-grid-3 {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .card-grid-2 {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .section-title-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .section-sub {
-        text-align: left;
-      }
-
-      .nav {
-        border-radius: 18px;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hero-sub {
-        max-width: none;
-      }
-    }
+    @view-transition { navigation: auto; }
   </style>
-</head>
-<body>
-  <!-- floating blobs -->
-  <div class="blob blob-left"></div>
-  <div class="blob blob-right"></div>
 
-  <div class="page">
-    <!-- NAV -->
-    <header class="nav">
-      <div class="nav-left">
-        <div class="logo-orb"></div>
-        <div>
-          <div class="nav-title-main">To-GoLing</div>
-          <div class="nav-title-sub">to-goling.app • Team 12V</div>
-        </div>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div id="app" class="w-full min-h-full">
+   <!-- Navigation -->
+   <nav class="w-full py-6 px-8" id="nav">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+     <h1 class="text-2xl md:text-3xl gradient-text tracking-widest" id="brand-name">
+       TO-GOLING
+     </h1>
+     <div class="hidden md:flex gap-8 text-sm md:text-base">
+       <a href="#features" class="hover:opacity-70 transition-opacity">Problem</a>
+       <a href="#product-detail" class="hover:opacity-70 transition-opacity">Solution</a>
+       <a href="#stats-section" class="hover:opacity-70 transition-opacity">Flow</a>
+       <a href="#cta-section" class="hover:opacity-70 transition-opacity">Team</a>
+     </div>
+    </div>
+   </nav>
+
+   <!-- Hero Section -->
+   <section class="w-full py-16 md:py-20 px-6 md:px-8" id="hero">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+     <!-- Left: Text -->
+     <div class="fade-in-up space-y-6">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect text-xs md:text-sm tracking-widest">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,1)]"></span>
+        LOCATION-BASED LIFE LOG • NFC KEYRING
       </div>
-      <nav class="nav-links">
-        <a href="#problem">Problem</a>
-        <a href="#solution">Product</a>
-        <a href="#how-it-works">Flow</a>
-        <a href="#about">Team</a>
-      </nav>
-    </header>
 
-    <!-- HERO -->
-    <main>
-      <section class="hero">
-        <div class="hero-left">
-          <div class="hero-pill">
-            <span class="hero-pill-dot"></span>
-            Location-based life log • NFC keyring
-          </div>
+      <h2 class="text-4xl md:text-6xl leading-tight gradient-text" id="hero-title">
+        TAP ONCE,<br />CAPTURE THE MOMENT.
+      </h2>
 
-          <h1 class="hero-title">
-            TO-GOLING<br />
-            TAP & LOG YOUR LIFE
-          </h1>
+      <p class="text-lg md:text-xl opacity-90 leading-relaxed" id="hero-subtitle">
+        NFC 키링을 스마트폰에 태그하면<br />
+        지금 이 순간의 감정·장소·시간이 바로 기록됩니다.<br />
+        번거로움 없이, 느낌이 사라지기 전에.
+      </p>
 
-          <p class="hero-sub">
-            NFC 키링을 스마트폰에 태그하면<br />
-            지금 이 순간의 감정·장소·시간이 바로 기록됩니다.<br />
-            번거로움 없이, 느낌이 사라지기 전에.
-          </p>
+      <div class="flex flex-wrap gap-4 items-center">
+        <button
+          id="cta-button"
+          class="px-8 py-3 rounded-full font-semibold text-base md:text-lg hover-lift bg-gradient-to-r from-pink-300 to-sky-300 text-slate-900 shadow-lg"
+        >
+          어떻게 작동하나요 →
+        </button>
+        <button
+          class="px-6 py-3 rounded-full font-semibold text-sm md:text-base glass-effect hover-lift"
+          onclick="document.querySelector('#cta-section').scrollIntoView({behavior:'smooth'})"
+        >
+          팀 12V 소개 보기 ☆
+        </button>
+      </div>
+     </div>
 
-          <div class="hero-cta-row">
-            <button class="btn-primary" onclick="document.getElementById('solution').scrollIntoView({ behavior:'smooth' })">
-              어떻게 작동하나요 →
-            </button>
+     <!-- Right: To-GoRing visual -->
+     <div class="float-animation">
+      <div class="w-64 h-64 md:w-72 md:h-72 mx-auto rounded-3xl glass-effect flex items-center justify-center relative">
+       <!-- 간단한 To-GoRing 모형 (나중에 이미지로 교체해도 됨) -->
+       <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+         <defs>
+           <linearGradient id="ring-body" x1="20" y1="20" x2="140" y2="140">
+             <stop offset="0%" stop-color="#FFFFFF" />
+             <stop offset="40%" stop-color="#E5ECFF" />
+             <stop offset="100%" stop-color="#A9B8FF" />
+           </linearGradient>
+           <radialGradient id="ring-glow" cx="0.3" cy="0.2" r="0.8">
+             <stop offset="0%" stop-color="#FFFFFF" />
+             <stop offset="100%" stop-color="#8EC5FF" />
+           </radialGradient>
+         </defs>
+         <!-- outer ring -->
+         <circle cx="80" cy="80" r="55" fill="url(#ring-body)" stroke="#93C5FD" stroke-width="3"/>
+         <!-- inner glow -->
+         <circle cx="80" cy="80" r="30" fill="url(#ring-glow)" opacity="0.9"/>
+         <!-- NFC tag hint -->
+         <rect x="62" y="25" width="36" height="14" rx="7" fill="#0F172A" opacity="0.7"/>
+         <circle cx="80" cy="32" r="3" fill="#E5E7EB"/>
+       </svg>
 
-            <button class="btn-ghost" onclick="document.getElementById('about').scrollIntoView({ behavior:'smooth' })">
-              팀 12V 소개 ☆
-            </button>
-          </div>
-        </div>
+       <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs md:text-sm px-4 py-2 rounded-full bg-slate-900/80 text-slate-100 shadow-lg">
+        To-GoRing · 태그하면 바로 기록
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
 
-        <aside class="hero-right">
-          <div class="hero-badge">Prototype Preview</div>
+   <!-- Problem Section (features) -->
+   <section id="features" class="w-full py-16 md:py-20 px-6 md:px-8">
+    <div class="max-w-7xl mx-auto">
+     <h3 class="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-16">Problem · 왜 필요할까요?</h3>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Problem 1 -->
+      <div class="p-8 rounded-2xl glass-effect hover-lift" id="feature-1">
+       <div class="w-16 h-16 rounded-full mb-6 flex items-center justify-center bg-slate-900/70 text-sky-200">
+        <span class="text-2xl">⏱️</span>
+       </div>
+       <h4 class="text-2xl font-bold mb-4" id="feature-1-title">기록까지 너무 많은 단계</h4>
+       <p class="opacity-80 text-sm md:text-base" id="feature-1-desc">
+        잠금 해제 → 앱 찾기 → 열기 → 타이핑.<br />
+        이 작은 귀찮음 때문에, 대부분의 순간이 그냥 지나가 버립니다.
+       </p>
+      </div>
 
-          <div class="hero-hardware">
-            <div class="ring-visual">
-              <div class="ring-visual-inner"></div>
-            </div>
-            <div class="hero-hardware-text">
-              <h3>To-GoRing NFC Keyring</h3>
-              <p>
-                A small, always-with-you keyring that becomes your “record”
-                button. Tap on your phone to start a mini diary in seconds.
-              </p>
-            </div>
-          </div>
+      <!-- Problem 2 -->
+      <div class="p-8 rounded-2xl glass-effect hover-lift" id="feature-2">
+       <div class="w-16 h-16 rounded-full mb-6 flex items-center justify-center bg-slate-900/70 text-pink-200">
+        <span class="text-2xl">💭</span>
+       </div>
+       <h4 class="text-2xl font-bold mb-4" id="feature-2-title">감정은 금방 사라져요</h4>
+       <p class="opacity-80 text-sm md:text-base" id="feature-2-desc">
+        “나중에 써야지” 하는 순간,<br />
+        카페·강가·버스 안에서 느꼈던 진짜 감정은 이미 흐려져 있죠.
+       </p>
+      </div>
 
-          <div class="hero-tagline">
-            <strong>From friction to flow.</strong>
-            Digital diaries are often opened too late – when the feelings have
-            already faded. We remove the unlock–open–type friction and keep the
-            emotion of “right now”.
-          </div>
+      <!-- Problem 3 -->
+      <div class="p-8 rounded-2xl glass-effect hover-lift" id="feature-3">
+       <div class="w-16 h-16 rounded-full mb-6 flex items-center justify-center bg-slate-900/70 text-emerald-200">
+        <span class="text-2xl">📍</span>
+       </div>
+       <h4 class="text-2xl font-bold mb-4" id="feature-3-title">장소가 빠진 일기</h4>
+       <p class="opacity-80 text-sm md:text-base" id="feature-3-desc">
+        대부분의 디지털 다이어리는 텍스트만 남깁니다.<br />
+        “그때, 어디에서 느꼈는지”까지 함께 남기긴 어렵죠.
+       </p>
+      </div>
+     </div>
+    </div>
+   </section>
 
-          <!-- 크롬 블랍 스티커 (원하면 이미지 넣기) -->
-          <!--
-          <img src="/stickers/chrome-blob-1.png"
-               alt=""
-               class="sticker fast"
-               style="width:160px; top:-40px; left:-60px;">
-          <img src="/stickers/chrome-blob-2.png"
-               alt=""
-               class="sticker slow"
-               style="width:120px; bottom:-50px; right:-50px;">
-          -->
-        </aside>
-      </section>
+   <!-- Solution Section (product-detail) -->
+   <section id="product-detail" class="w-full py-16 md:py-20 px-6 md:px-8">
+    <div class="max-w-7xl mx-auto">
+     <h3 class="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-16">Solution · 한 번의 태그로 완성되는 일기</h3>
 
-      <!-- PROBLEM -->
-      <section id="problem">
-        <div class="section-label">Problem</div>
-        <div class="section-title-row">
-          <h2 class="section-title">Why we built To-GoLing</h2>
-          <p class="section-sub">
-            Modern life moves fast. By the time you open your notes app at home,
-            the vivid feeling from that café, river, or bus ride is gone.
-          </p>
-        </div>
-
-        <div class="card-grid-3">
-          <article class="card">
-            <div class="card-header-label">Friction</div>
-            <h3 class="card-title">Too many steps to record</h3>
-            <p class="card-body">
-              Unlock phone → find app → open → type.
-              That tiny delay is enough for people to give up recording their day.
-            </p>
-          </article>
-          <article class="card">
-            <div class="card-header-label">Emotion</div>
-            <h3 class="card-title">Feelings fade quickly</h3>
-            <p class="card-body">
-              “I’ll write about it later” turns into “I don’t remember exactly”.
-              Precious moments are lost or flattened into generic text.
-            </p>
-          </article>
-          <article class="card">
-            <div class="card-header-label">Context</div>
-            <h3 class="card-title">Location is missing</h3>
-            <p class="card-body">
-              Traditional diaries rarely connect feelings with concrete places,
-              routes, and real-world context – even though those matter.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <!-- SOLUTION / PRODUCT -->
-      <section id="solution">
-        <div class="section-label">Solution</div>
-        <div class="section-title-row">
-          <h2 class="section-title">A diary that starts with a tap</h2>
-          <p class="section-sub">
-            To-GoLing combines a physical NFC keyring (“To-GoRing”) with an
-            intelligent app (“To-Go”) to turn your everyday movement into an
-            effortless life log.
-          </p>
-        </div>
-
-        <div class="card-grid-2">
-          <article class="card">
-            <div class="card-header-label">Hardware</div>
-            <h3 class="card-title">To-GoRing: emotional NFC keyring</h3>
-            <p class="card-body">
-              Attach it to your bag, keys, or AirPods. The keyring acts as your
-              record trigger – a tiny ritual that feels analog and warm.
-            </p>
-            <ul class="card-list">
-              <li>NFC-based trigger to open the app</li>
-              <li>Always on you, zero extra steps</li>
-              <li>Designed as a fashion item, not a gadget</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-header-label">Software</div>
-            <h3 class="card-title">To-Go: context-aware diary app</h3>
-            <p class="card-body">
-              The app turns your tap into a structured micro-entry with location,
-              time, and guiding questions – no blank page anxiety.
-            </p>
-            <ul class="card-list">
-              <li>Auto-captures place &amp; weather</li>
-              <li>AI prompts tailored to your location</li>
-              <li>Map &amp; feed view of your day</li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <!-- HOW IT WORKS -->
-      <section id="how-it-works">
-        <div class="section-label">Flow</div>
-        <div class="section-title-row">
-          <h2 class="section-title">How it works in 3 steps</h2>
-          <p class="section-sub">
-            We keep your life’s flow intact. Recording should feel like a
-            heartbeat, not homework.
-          </p>
-        </div>
-
-        <div class="card-grid-3">
-          <article class="card">
-            <div class="card-header-label">Step 1</div>
-            <h3 class="card-title">Tap the keyring</h3>
-            <p class="card-body">
-              When you feel something worth remembering, simply tap the
-              To-GoRing on your phone – wherever you are.
-            </p>
-          </article>
-          <article class="card">
-            <div class="card-header-label">Step 2</div>
-            <h3 class="card-title">Answer a tiny question</h3>
-            <p class="card-body">
-              The app opens with a short, location-based question like
-              “You’re at the river. What song are you listening to?”
-            </p>
-          </article>
-          <article class="card">
-            <div class="card-header-label">Step 3</div>
-            <h3 class="card-title">See your day as a map</h3>
-            <p class="card-body">
-              Entries appear on both a feed and a map. Later, you can revisit
-              not just what you felt, but where you felt it.
-            </p>
-          </article>
-        </div>
-
-        <div style="margin-top: 18px;">
-          <div class="card">
-            <div class="card-header-label">Extra</div>
-            <h3 class="card-title">To-Go List: location-based to-do</h3>
-            <p class="card-body">
-              You can set “to-go” tasks that only complete when you actually
-              visit the place and tap your keyring.<br />
-              Example: “Arrive at the library by 10:00.” When you get there and
-              tag, you get a small celebration and character XP.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABOUT / TEAM -->
-      <section id="about">
-        <div class="section-label">Team</div>
-        <div class="section-title-row">
-          <h2 class="section-title">About Team 12V</h2>
-          <p class="section-sub">
-            To-GoLing is a one-time university project exploring how hardware
-            and software can blend into a more human way of recording life.
-          </p>
-        </div>
-
-        <div class="card-grid-2">
-          <article class="card">
-            <div class="card-header-label">Project Scope</div>
-            <h3 class="card-title">Prototype, not a startup (yet)</h3>
-            <p class="card-body">
-              This version of To-GoLing is a proof-of-concept focused on:
-            </p>
-            <ul class="card-list">
-              <li>NFC keyring prototype design</li>
-              <li>Core app UX &amp; interaction flow</li>
-              <li>Early user feedback &amp; demo</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-header-label">Vision</div>
-            <h3 class="card-title">From diary to life log</h3>
-            <p class="card-body">
-              We see a world where diaries are alive with places, routes, and
-              honest moments – not just text written before bed.
-            </p>
-          </article>
-        </div>
-
-        <div style="margin-top: 16px;">
-          <div class="timeline">
-            <div class="timeline-label">Project timeline</div>
-            <div class="timeline-row">
-              <div class="timeline-dot"></div>
-              <div>
-                <strong>Phase 1 – Research &amp; Ideation:</strong>
-                interviews with digital diary users and analysis of “friction”
-                in recording.
-              </div>
-            </div>
-            <div class="timeline-row">
-              <div class="timeline-dot"></div>
-              <div>
-                <strong>Phase 2 – Prototype:</strong>
-                NFC keyring mock-up, app flow, and early tests of “tap to log”.
-              </div>
-            </div>
-            <div class="timeline-row">
-              <div class="timeline-dot"></div>
-              <div>
-                <strong>Phase 3 – Demo:</strong>
-                in-class presentation, user feedback, and reflection on what
-                worked – and what to try next.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div>© To-GoLing · Team 12V · to-goling.app</div>
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+      <!-- Visual / Mock -->
       <div>
-        Contact:
-        <a href="mailto:hello@to-goling.app">hello@to-goling.app</a>
+       <div class="w-full aspect-square rounded-3xl glass-effect p-8 mb-4 hover-lift flex items-center justify-center">
+        <!-- 여기 SVG는 To-GoRing + 지도 느낌 mock, 필요하면 이미지로 교체해도 됨 -->
+        <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="phone-body" x1="40" y1="40" x2="240" y2="240">
+              <stop offset="0%" stop-color="#F5F5FF" />
+              <stop offset="50%" stop-color="#FFFFFF" />
+              <stop offset="100%" stop-color="#C7D2FE" />
+            </linearGradient>
+            <linearGradient id="map-path" x1="60" y1="200" x2="220" y2="80">
+              <stop offset="0%" stop-color="#38BDF8" />
+              <stop offset="100%" stop-color="#F97316" />
+            </linearGradient>
+          </defs>
+          <!-- phone -->
+          <rect x="50" y="40" width="180" height="220" rx="30" fill="url(#phone-body)" stroke="#93C5FD" stroke-width="3"/>
+          <!-- map path -->
+          <path d="M80 210C100 170 130 180 150 150C170 120 200 110 230 90" stroke="url(#map-path)" stroke-width="4" stroke-linecap="round"/>
+          <!-- pins -->
+          <circle cx="90" cy="200" r="8" fill="#0F172A"/>
+          <circle cx="150" cy="150" r="8" fill="#0F172A"/>
+          <circle cx="215" cy="95" r="8" fill="#0F172A"/>
+
+          <!-- To-GoRing tag bubble -->
+          <circle cx="140" cy="80" r="26" fill="#0F172A" opacity="0.9"/>
+          <circle cx="140" cy="80" r="18" fill="#38BDF8"/>
+          <text x="140" y="84" text-anchor="middle" fill="white" font-size="10">TAP</text>
+        </svg>
+       </div>
+
+       <p class="text-sm md:text-base opacity-70 mt-2 text-center">
+        To-GoRing를 태그하면, 앱이 자동으로 장소·시간·날씨와 함께 작은 질문을 띄워줍니다.
+       </p>
       </div>
-    </footer>
+
+      <!-- 설명 텍스트 -->
+      <div class="flex flex-col justify-center space-y-6">
+       <div class="inline-block px-4 py-2 rounded-full glass-effect mb-2 w-fit">
+        <span class="text-sm font-semibold">HARDWARE · To-GoRing</span>
+       </div>
+       <h4 class="text-3xl md:text-4xl font-bold mb-2" id="product-name">
+        손에 쥐는 “기록 버튼”
+       </h4>
+       <p class="text-lg md:text-xl mb-4 opacity-80 leading-relaxed" id="product-description">
+        가방, 열쇠, 에어팟에 달아두는 작은 NFC 키링.<br />
+        스마트폰에 톡- 태그하는 순간, 다이어리가 아니라 “지금 여기”가 먼저 열립니다.
+       </p>
+
+       <div class="grid grid-cols-2 gap-4 mb-6 text-sm md:text-base">
+        <div class="p-4 rounded-xl glass-effect">
+         <div class="opacity-60 mb-1">연결</div>
+         <div class="text-xl font-bold">NFC 태그 한 번</div>
+        </div>
+        <div class="p-4 rounded-xl glass-effect">
+         <div class="opacity-60 mb-1">포맷</div>
+         <div class="text-xl font-bold">마이크로 다이어리</div>
+        </div>
+        <div class="p-4 rounded-xl glass-effect">
+         <div class="opacity-60 mb-1">저장</div>
+         <div class="text-xl font-bold">장소·날씨·시간 자동</div>
+        </div>
+        <div class="p-4 rounded-xl glass-effect">
+         <div class="opacity-60 mb-1">뷰</div>
+         <div class="text-xl font-bold">피드 + 지도</div>
+        </div>
+       </div>
+
+       <div class="space-y-3 text-sm md:text-base">
+        <div class="font-semibold opacity-80">SOFTWARE · To-Go 앱</div>
+        <ul class="list-disc list-inside opacity-80 space-y-1">
+          <li>현재 위치·날씨·시간을 자동으로 붙여줍니다.</li>
+          <li>“한강이에요. 지금 듣는 노래는?” 같은 장소 기반 질문이 떠요.</li>
+          <li>하루가 피드와 지도 위에 동시에 쌓입니다.</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+
+     <!-- 작은 추가 카드 -->
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="p-8 rounded-2xl glass-effect text-center hover-lift">
+       <div class="text-5xl mb-4">🪪</div>
+       <h5 class="text-xl font-bold mb-2">물리적 트리거</h5>
+       <p class="opacity-70 text-sm md:text-base">
+        “앱 열기”가 아니라 “태그”라는 작은 의식으로 하루가 정리됩니다.
+       </p>
+      </div>
+      <div class="p-8 rounded-2xl glass-effect text-center hover-lift">
+       <div class="text-5xl mb-4">🗺️</div>
+       <h5 class="text-xl font-bold mb-2">지도 위의 하루</h5>
+       <p class="opacity-70 text-sm md:text-base">
+        감정과 장소가 동시에 남아서, 나중에 “그날의 동선”까지 돌아볼 수 있어요.
+       </p>
+      </div>
+      <div class="p-8 rounded-2xl glass-effect text-center hover-lift">
+       <div class="text-5xl mb-4">🎮</div>
+       <h5 class="text-xl font-bold mb-2">To-Go List</h5>
+       <p class="opacity-70 text-sm md:text-base">
+        “도서관 10시 도착”처럼, 직접 가서 태그해야만 완료되는 위치 기반 할 일도 가능합니다.
+       </p>
+      </div>
+     </div>
+    </div>
+   </section>
+
+   <!-- Flow Section (stats-section) -->
+   <section class="w-full py-16 md:py-20 px-6 md:px-8" id="stats-section">
+    <div class="max-w-7xl mx-auto">
+     <h3 class="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-14">Flow · 3단계로 끝나는 기록</h3>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="text-center p-8 rounded-2xl glass-effect hover-lift">
+       <div class="text-4xl md:text-5xl font-bold mb-3 gradient-text">
+        ①
+       </div>
+       <div class="text-lg md:text-xl mb-2">태그하기</div>
+       <div class="opacity-80 text-sm md:text-base">
+        “기록할 만한 순간이다” 싶을 때,<br />그냥 To-GoRing을 폰에 톡- 태그합니다.
+       </div>
+      </div>
+      <div class="text-center p-8 rounded-2xl glass-effect hover-lift">
+       <div class="text-4xl md:text-5xl font-bold mb-3 gradient-text">
+        ②
+       </div>
+       <div class="text-lg md:text-xl mb-2">짧게 답하기</div>
+       <div class="opacity-80 text-sm md:text-base">
+        앱이 열리면서, 장소 기반 질문 하나가 뜹니다.<br />
+        한 줄만 써도, 그 순간은 충분해요.
+       </div>
+      </div>
+      <div class="text-center p-8 rounded-2xl glass-effect hover-lift">
+       <div class="text-4xl md:text-5xl font-bold mb-3 gradient-text">
+        ③
+       </div>
+       <div class="text-lg md:text-xl mb-2">지도로 돌아보기</div>
+       <div class="opacity-80 text-sm md:text-base">
+        하루가 피드와 지도에 그대로 남습니다.<br />
+        “그때, 어디서, 어떻게 느꼈는지” 한눈에.
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+
+   <!-- Team / CTA Section -->
+   <section class="w-full py-16 md:py-20 px-6 md:px-8" id="cta-section">
+    <div class="max-w-4xl mx-auto text-center p-10 md:p-12 rounded-3xl glass-effect">
+     <h3 class="text-3xl md:text-4xl font-bold mb-4">Team 12V · To-GoLing Project</h3>
+     <p class="text-base md:text-xl mb-6 opacity-85 leading-relaxed">
+       To-GoLing은 하드웨어와 소프트웨어가 만나<br />
+       “사라지기 쉬운 감정”들을 조금 더 오래 붙잡을 수 있을까? 라는 질문에서 시작된
+       대학 프로젝트입니다.
+     </p>
+     <p class="text-sm md:text-base mb-8 opacity-75">
+       아직은 프로토타입 단계지만, NFC 키링·앱 UX·초기 유저 인터뷰를 기반으로<br />
+       “한 번의 태그”가 정말 기록 습관을 바꿀 수 있는지 실험하고 있습니다.
+     </p>
+     <div class="flex flex-col items-center gap-3">
+       <a href="mailto:hello@to-goling.app" class="px-8 py-4 rounded-full font-semibold text-base md:text-lg hover-lift bg-gradient-to-r from-sky-300 to-pink-300 text-slate-900">
+         팀 12V에게 연락하기
+       </a>
+       <span class="text-xs md:text-sm opacity-70">
+         문의 · 협업 제안 · 피드백 모두 환영합니다 :)
+       </span>
+     </div>
+    </div>
+   </section>
+
+   <!-- Footer -->
+   <footer class="w-full py-8 px-6 md:px-8 border-t border-white/60" id="footer">
+    <div class="max-w-7xl mx-auto text-center opacity-70 text-xs md:text-sm">
+     <p id="footer-text">© 2024 To-GoLing · Team 12V · to-goling.app</p>
+    </div>
+   </footer>
   </div>
 
   <script>
-    // no extra JS needed right now :)
+    const defaultConfig = {
+      background_color: "#0A0E27",
+      surface_color: "#1A1F3A",
+      text_color: "#E8E8E8",
+      primary_action_color: "#C0C0C0",
+      secondary_action_color: "#8B8B8B",
+      font_family: "'Black Han Sans', system-ui, -apple-system, sans-serif",
+      font_size: 16,
+      brand_name: "TO-GOLING",
+      hero_title: "TAP ONCE, CAPTURE THE MOMENT.",
+      hero_subtitle: "NFC 키링을 스마트폰에 태그하면 지금 이 순간의 감정·장소·시간이 바로 기록됩니다. 번거로움 없이, 느낌이 사라지기 전에.",
+      cta_button: "어떻게 작동하나요 →",
+      feature_1_title: "기록까지 너무 많은 단계",
+      feature_1_desc: "잠금 해제 → 앱 찾기 → 열기 → 타이핑. 이 작은 귀찮음 때문에 대부분의 순간이 그냥 지나가 버립니다.",
+      feature_2_title: "감정은 금방 사라져요",
+      feature_2_desc: "“나중에 써야지”라고 미루는 사이, 카페·강가·버스 안에서 느꼈던 진짜 감정은 이미 흐려져 있죠.",
+      feature_3_title: "장소가 빠진 일기",
+      feature_3_desc: "대부분의 디지털 다이어리는 텍스트만 남깁니다. “그때, 어디에서 느꼈는지”까지 함께 남기긴 어렵죠.",
+      product_name: "손에 쥐는 ‘기록 버튼’",
+      product_description: "To-GoRing은 가방, 열쇠, 에어팟에 달아두는 작은 NFC 키링입니다. 스마트폰에 톡- 태그하는 순간, 다이어리가 아니라 “지금 여기”가 먼저 열립니다.",
+      footer_text: "© 2024 To-GoLing · Team 12V · to-goling.app"
+    };
+
+    async function onConfigChange(config) {
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const surfaceColor = config.surface_color || defaultConfig.surface_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const primaryActionColor = config.primary_action_color || defaultConfig.primary_action_color;
+      const secondaryActionColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontSize = config.font_size || defaultConfig.font_size;
+      const baseFontStack = "'Black Han Sans', system-ui, -apple-system, sans-serif";
+
+      // Apply colors (이 부분은 elementSdk 쓸 때만 실제로 적용됨)
+      document.body.style.backgroundColor = backgroundColor;
+      document.body.style.color = textColor;
+
+      document.getElementById('nav').style.backgroundColor = backgroundColor;
+      document.getElementById('nav').style.color = textColor;
+
+      document.getElementById('hero').style.backgroundColor = backgroundColor;
+      document.getElementById('hero').style.color = textColor;
+
+      document.getElementById('features').style.backgroundColor = surfaceColor;
+      document.getElementById('features').style.color = textColor;
+
+      document.getElementById('cta-section').style.backgroundColor = backgroundColor;
+      document.getElementById('cta-section').style.color = textColor;
+
+      document.getElementById('footer').style.backgroundColor = surfaceColor;
+      document.getElementById('footer').style.borderTopColor = primaryActionColor;
+      document.getElementById('footer').style.color = textColor;
+
+      const ctaButtons = document.querySelectorAll('button');
+      ctaButtons.forEach(btn => {
+        btn.style.backgroundColor = primaryActionColor;
+        btn.style.color = backgroundColor;
+      });
+
+      const features = [document.getElementById('feature-1'), document.getElementById('feature-2'), document.getElementById('feature-3')];
+      features.forEach(feature => {
+        feature.style.backgroundColor = backgroundColor;
+        const icon = feature.querySelector('div');
+        if (icon) {
+          icon.style.backgroundColor = surfaceColor;
+          icon.style.color = primaryActionColor;
+        }
+      });
+
+      const links = document.querySelectorAll('nav a');
+      links.forEach(link => {
+        link.style.color = secondaryActionColor;
+      });
+
+      // Apply fonts
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.getElementById('brand-name').style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.getElementById('hero-title').style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.getElementById('hero-subtitle').style.fontFamily = `${customFont}, ${baseFontStack}`;
+
+      // Apply font sizes
+      document.getElementById('brand-name').style.fontSize = `${baseFontSize * 1.5}px`;
+      document.getElementById('hero-title').style.fontSize = `${baseFontSize * 2.8}px`;
+      document.getElementById('hero-subtitle').style.fontSize = `${baseFontSize * 1.25}px`;
+
+      const featureTitles = document.querySelectorAll('[id$="-title"]');
+      featureTitles.forEach(title => {
+        title.style.fontSize = `${baseFontSize * 1.4}px`;
+      });
+
+      const featureDescs = document.querySelectorAll('[id$="-desc"]');
+      featureDescs.forEach(desc => {
+        desc.style.fontSize = `${baseFontSize * 0.95}px`;
+      });
+
+      document.getElementById('footer-text').style.fontSize = `${baseFontSize * 0.875}px`;
+
+      // Apply text content
+      document.getElementById('brand-name').textContent = config.brand_name || defaultConfig.brand_name;
+      document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+      document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+      document.getElementById('cta-button').textContent = config.cta_button || defaultConfig.cta_button;
+      document.getElementById('feature-1-title').textContent = config.feature_1_title || defaultConfig.feature_1_title;
+      document.getElementById('feature-1-desc').textContent = config.feature_1_desc || defaultConfig.feature_1_desc;
+      document.getElementById('feature-2-title').textContent = config.feature_2_title || defaultConfig.feature_2_title;
+      document.getElementById('feature-2-desc').textContent = config.feature_2_desc || defaultConfig.feature_2_desc;
+      document.getElementById('feature-3-title').textContent = config.feature_3_title || defaultConfig.feature_3_title;
+      document.getElementById('feature-3-desc').textContent = config.feature_3_desc || defaultConfig.feature_3_desc;
+      document.getElementById('product-name').textContent = config.product_name || defaultConfig.product_name;
+      document.getElementById('product-description').textContent = config.product_description || defaultConfig.product_description;
+      document.getElementById('footer-text').textContent = config.footer_text || defaultConfig.footer_text;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.surface_color || defaultConfig.surface_color,
+            set: (value) => {
+              config.surface_color = value;
+              window.elementSdk.setConfig({ surface_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.primary_action_color || defaultConfig.primary_action_color,
+            set: (value) => {
+              config.primary_action_color = value;
+              window.elementSdk.setConfig({ primary_action_color: value });
+            }
+          },
+          {
+            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+            set: (value) => {
+              config.secondary_action_color = value;
+              window.elementSdk.setConfig({ secondary_action_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            config.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            config.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["brand_name", config.brand_name || defaultConfig.brand_name],
+        ["hero_title", config.hero_title || defaultConfig.hero_title],
+        ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+        ["cta_button", config.cta_button || defaultConfig.cta_button],
+        ["feature_1_title", config.feature_1_title || defaultConfig.feature_1_title],
+        ["feature_1_desc", config.feature_1_desc || defaultConfig.feature_1_desc],
+        ["feature_2_title", config.feature_2_title || defaultConfig.feature_2_title],
+        ["feature_2_desc", config.feature_2_desc || defaultConfig.feature_2_desc],
+        ["feature_3_title", config.feature_3_title || defaultConfig.feature_3_title],
+        ["feature_3_desc", config.feature_3_desc || defaultConfig.feature_3_desc],
+        ["product_name", config.product_name || defaultConfig.product_name],
+        ["product_description", config.product_description || defaultConfig.product_description],
+        ["footer_text", config.footer_text || defaultConfig.footer_text]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
   </script>
-</body>
+
+  <!-- (원래 템플릿에 있던 Cloudflare 스크립트는 굳이 필요 없어서 제거해도 됨) -->
+ </body>
 </html>
