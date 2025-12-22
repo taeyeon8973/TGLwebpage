@@ -14,6 +14,11 @@
     href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
     rel="stylesheet"
   />
+  
+    <link
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+      rel="stylesheet"
+    />
 
   <style>
     * {
@@ -25,10 +30,21 @@
     html, body {
       height: 100%;
       width: 100%;
+      
+      /* Headline용 폰트 분리 */
+      #brand-name,
+      #hero-title,
+      section h3,
+      section h4 {
+        font-family: 'Black Han Sans', system-ui, -apple-system, sans-serif;
+        font-weight: 400;
+      }
+
     }
 
     body {
-      font-family: 'Black Han Sans', system-ui, -apple-system, sans-serif;
+      font-family: 'Pretendard', system-ui, -apple-system, sans-serif;
+      font-weight: 400;
       /* 하늘+그라데이션 배경 */
       background:
         radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.9) 0, transparent 45%),
@@ -382,7 +398,7 @@
      <p class="text-base md:text-xl mb-6 opacity-85 leading-relaxed">
        To-GoLing은 하드웨어와 소프트웨어가 만나<br />
        “사라지기 쉬운 감정”들을 조금 더 오래 붙잡을 수 있을까? 라는 질문에서 시작된
-       대학 프로젝트입니다.
+       프로젝트입니다.
      </p>
      <p class="text-sm md:text-base mb-8 opacity-75">
        아직은 프로토타입 단계지만, NFC 키링·앱 UX·초기 유저 인터뷰를 기반으로<br />
@@ -397,6 +413,83 @@
        </span>
      </div>
     </div>
+      <!-- Meet the Team -->
+      <div class="mt-14">
+        <h4 class="text-2xl md:text-3xl font-bold mb-8">
+          Meet the Team
+        </h4>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          
+          <!-- Row 1 -->
+          <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
+            <div class="text-lg font-bold mb-1">🍒김태연</div>
+            <div class="text-sm opacity-70 mb-3">App · Frontend · Engineering</div>
+            <a href="mailto:taeyeon@to-goling.app"
+              class="text-xs opacity-80 hover:opacity-100 underline">
+              taeyeon@to-goling.app
+            </a>
+          </div>
+          
+          <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
+            <div class="text-lg font-bold mb-1">🍀정예솔</div>
+            <div class="text-sm opacity-70 mb-3">Design · Product</div>
+            <a href="mailto:member@to-goling.app"
+              class="text-xs opacity-80 hover:opacity-100 underline">
+              member@to-goling.app
+            </a>
+          </div>
+          
+          <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
+            <div class="text-lg font-bold mb-1">🥥최민수</div>
+            <div class="text-sm opacity-70 mb-3">Hardware · Prototype· Product</div>
+            <a href="mailto:member@to-goling.app"
+              class="text-xs opacity-80 hover:opacity-100 underline">
+              member@to-goling.app
+            </a>
+          </div>
+          
+          <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
+            <div class="text-lg font-bold mb-1">🌟이루다</div>
+            <div class="text-sm opacity-70 mb-3">Research · Analysis</div>
+            <a href="mailto:member@to-goling.app"
+              class="text-xs opacity-80 hover:opacity-100 underline">
+              member@to-goling.app
+            </a>
+          </div>
+          
+          <!-- Row 2 -->
+          <div class="p-6 rounded-2xl glass-effect hover-lift text-left md:col-span-1">
+            <div class="text-lg font-bold mb-1">🙃박한결</div>
+            <div class="text-sm opacity-70 mb-3">Research · Analysis</div>
+            <a href="mailto:member@to-goling.app"
+              class="text-xs opacity-80 hover:opacity-100 underline">
+              member@to-goling.app
+            </a>
+          </div>
+          
+          <div class="p-6 rounded-2xl glass-effect hover-lift text-left md:col-span-1">
+            <div class="text-lg font-bold mb-1">🧩박시진</div>
+            <div class="text-sm opacity-70 mb-3">Operation · Strategy</div>
+            <a href="mailto:member@to-goling.app"
+              class="text-xs opacity-80 hover:opacity-100 underline">
+              member@to-goling.app
+            </a>
+          </div>
+          
+          <div class="p-6 rounded-2xl glass-effect hover-lift text-left md:col-span-2">
+            <div class="text-lg font-bold mb-1">😎배병찬</div>
+            <div class="text-sm opacity-70 mb-3">Business · Strategy</div>
+            <a href="mailto:member@to-goling.app"
+              class="text-xs opacity-80 hover:opacity-100 underline">
+              member@to-goling.app
+            </a>
+          </div>
+          
+        </div>
+      </div>
+
+
    </section>
 
    <!-- Footer -->
