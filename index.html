@@ -1,85 +1,92 @@
 <!doctype html>
 <html lang="ko">
- <head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-GoLing.app | Tap & Log Your Life</title>
   <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Black Han Sans -->
+  <!-- Black Han Sans (headlines) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"
     rel="stylesheet"
   />
-  
-    <link
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
-      rel="stylesheet"
-    />
+
+  <!-- Pretendard (body / readable thin) -->
+  <link
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+    rel="stylesheet"
+  />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; width: 100%; }
 
-    html, body {
-      height: 100%;
-      width: 100%;
-      
-      /* Headline용 폰트 분리 */
-      #brand-name,
-      #hero-title,
-      section h3,
-      section h4 {
-        font-family: 'Black Han Sans', system-ui, -apple-system, sans-serif;
-        font-weight: 400;
-      }
+    /* === SKY BACKGROUND (splash vibe) === */
+    body{
+      font-family:'Pretendard', system-ui, -apple-system, sans-serif;
+      font-weight:400;
+      color:#0b1220;
 
-    }
-
-    body {
-      font-family: 'Pretendard', system-ui, -apple-system, sans-serif;
-      font-weight: 400;
-      /* 하늘+그라데이션 배경 */
       background:
-        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.9) 0, transparent 45%),
-        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.85) 0, transparent 48%),
-        linear-gradient(to bottom, #bde1ff, #dff0ff 45%, #f7fbff);
+        radial-gradient(900px 600px at 20% 15%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 60%),
+        radial-gradient(900px 620px at 80% 20%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 62%),
+        linear-gradient(180deg, #7fb3ff 0%, #9fd0ff 35%, #e8f5ff 72%, #ffffff 100%);
       background-attachment: fixed;
-      color: #0f172a;
+
+      position: relative;
+      overflow-x: hidden;
     }
 
+    /* cloud/air texture + vignette-ish focus */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 25% 30%, rgba(255,255,255,0.35) 0 18%, rgba(255,255,255,0) 40%),
+        radial-gradient(circle at 65% 55%, rgba(255,255,255,0.28) 0 16%, rgba(255,255,255,0) 38%),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.22) 0 14%, rgba(255,255,255,0) 36%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.10) 100%);
+      filter: blur(10px);
+      opacity: .70;
+      mix-blend-mode: screen;
+    }
+
+    /* === animations === */
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes float {
-      0%, 100% {
-        transform: translateY(0px);
-      }
-      50% {
-        transform: translateY(-20px);
-      }
+      0%, 100% { transform: translateY(0px); }
+      50%      { transform: translateY(-20px); }
     }
 
-    .fade-in-up {
-      animation: fadeInUp 0.8s ease-out forwards;
-    }
+    .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+    .float-animation { animation: float 3s ease-in-out infinite; }
 
-    .float-animation {
-      animation: float 3s ease-in-out infinite;
+    /* === chrome balloon text (splash title vibe) === */
+    .chrome-text{
+      background: linear-gradient(180deg,
+        #ffffff 0%,
+        #e9f0ff 18%,
+        #c7d6ff 35%,
+        #ffffff 55%,
+        #9fb3ff 72%,
+        #ffffff 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow:
+        0 10px 25px rgba(15,23,42,0.18),
+        0 2px 0 rgba(255,255,255,0.9);
+      letter-spacing: .18em;
     }
 
     .gradient-text {
@@ -87,13 +94,17 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      text-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
     }
 
+    /* === glass cards (cool 3D) === */
     .glass-effect {
-      background: rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
+      background: rgba(255,255,255,0.20);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.75);
+      box-shadow:
+        0 22px 55px rgba(15,23,42,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.65);
     }
 
     .hover-lift {
@@ -102,412 +113,450 @@
 
     .hover-lift:hover {
       transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.18);
+    }
+
+    /* === make text POP (avoid too-faded opacity) === */
+    p, li { color: rgba(15,23,42,0.92); }
+    .opacity-70, .opacity-75, .opacity-80, .opacity-85, .opacity-90 { opacity: 1 !important; }
+
+    /* Headlines use Black Han Sans (keep brand punch) */
+    #brand-name,
+    #hero-title,
+    section h3,
+    section h4 {
+      font-family: 'Black Han Sans', system-ui, -apple-system, sans-serif;
+      font-weight: 400;
+    }
+
+    /* Sticky nav glass */
+    #nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(189, 225, 255, 0.22);
+      border-bottom: 1px solid rgba(255,255,255,0.55);
+    }
+
+    /* Decorative floating blobs in hero */
+    #hero { position: relative; }
+    .decor{
+      position:absolute;
+      pointer-events:none;
+      opacity:.95;
+      z-index:0;
+    }
+    .decor-1{
+      width:180px; height:180px;
+      left:-40px; top:40px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(160,210,255,0) 65%);
+      border-radius: 40% 60% 60% 40% / 45% 45% 55% 55%;
+      animation: floaty 6s ease-in-out infinite;
+      filter: blur(0.2px);
+    }
+    .decor-2{
+      width:220px; height:220px;
+      right:-60px; bottom:10px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.85), rgba(255,181,255,0) 70%);
+      border-radius: 55% 45% 40% 60% / 55% 55% 45% 45%;
+      animation: floaty 7.5s ease-in-out infinite;
+      filter: blur(0.2px);
+    }
+    @keyframes floaty{
+      0%,100%{ transform: translateY(0px) translateX(0px) }
+      50%{ transform: translateY(-18px) translateX(6px) }
     }
 
     @view-transition { navigation: auto; }
   </style>
 
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body>
+</head>
+
+<body>
   <div id="app" class="w-full min-h-full">
-   <!-- Navigation -->
-   <nav class="w-full py-6 px-8" id="nav">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-     <h1 class="text-2xl md:text-3xl gradient-text tracking-widest" id="brand-name">
-       TO-GOLING
-     </h1>
-     <div class="hidden md:flex gap-8 text-sm md:text-base">
-       <a href="#features" class="hover:opacity-70 transition-opacity">Problem</a>
-       <a href="#product-detail" class="hover:opacity-70 transition-opacity">Solution</a>
-       <a href="#stats-section" class="hover:opacity-70 transition-opacity">Flow</a>
-       <a href="#cta-section" class="hover:opacity-70 transition-opacity">Team</a>
-     </div>
-    </div>
-   </nav>
 
-   <!-- Hero Section -->
-   <section class="w-full py-16 md:py-20 px-6 md:px-8" id="hero">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-     <!-- Left: Text -->
-     <div class="fade-in-up space-y-6">
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect text-xs md:text-sm tracking-widest">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,1)]"></span>
-        LOCATION-BASED LIFE LOG • NFC KEYRING
-      </div>
-
-      <h2 class="text-4xl md:text-6xl leading-tight gradient-text" id="hero-title">
-        TAP ONCE,<br />CAPTURE THE MOMENT.
-      </h2>
-
-      <p class="text-lg md:text-xl opacity-90 leading-relaxed" id="hero-subtitle">
-        NFC 키링을 스마트폰에 태그하면<br />
-        지금 이 순간의 감정·장소·시간이 바로 기록됩니다.<br />
-        번거로움 없이, 느낌이 사라지기 전에.
-      </p>
-
-      <div class="flex flex-wrap gap-4 items-center">
-        <button
-          id="cta-button"
-          class="px-8 py-3 rounded-full font-semibold text-base md:text-lg hover-lift bg-gradient-to-r from-pink-300 to-sky-300 text-slate-900 shadow-lg"
-        >
-          어떻게 작동하나요 →
-        </button>
-        <button
-          class="px-6 py-3 rounded-full font-semibold text-sm md:text-base glass-effect hover-lift"
-          onclick="document.querySelector('#cta-section').scrollIntoView({behavior:'smooth'})"
-        >
-          팀 12V 소개 보기 ☆
-        </button>
-      </div>
-     </div>
-
-     <!-- Right: To-GoRing visual -->
-     <div class="float-animation">
-      <div class="w-64 h-64 md:w-72 md:h-72 mx-auto rounded-3xl glass-effect flex items-center justify-center relative">
-       <!-- 간단한 To-GoRing 모형 (나중에 이미지로 교체해도 됨) -->
-       <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-         <defs>
-           <linearGradient id="ring-body" x1="20" y1="20" x2="140" y2="140">
-             <stop offset="0%" stop-color="#FFFFFF" />
-             <stop offset="40%" stop-color="#E5ECFF" />
-             <stop offset="100%" stop-color="#A9B8FF" />
-           </linearGradient>
-           <radialGradient id="ring-glow" cx="0.3" cy="0.2" r="0.8">
-             <stop offset="0%" stop-color="#FFFFFF" />
-             <stop offset="100%" stop-color="#8EC5FF" />
-           </radialGradient>
-         </defs>
-         <!-- outer ring -->
-         <circle cx="80" cy="80" r="55" fill="url(#ring-body)" stroke="#93C5FD" stroke-width="3"/>
-         <!-- inner glow -->
-         <circle cx="80" cy="80" r="30" fill="url(#ring-glow)" opacity="0.9"/>
-         <!-- NFC tag hint -->
-         <rect x="62" y="25" width="36" height="14" rx="7" fill="#0F172A" opacity="0.7"/>
-         <circle cx="80" cy="32" r="3" fill="#E5E7EB"/>
-       </svg>
-
-       <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs md:text-sm px-4 py-2 rounded-full bg-slate-900/80 text-slate-100 shadow-lg">
-        To-GoRing · 태그하면 바로 기록
-       </div>
-      </div>
-     </div>
-    </div>
-   </section>
-
-   <!-- Problem Section (features) -->
-   <section id="features" class="w-full py-16 md:py-20 px-6 md:px-8">
-    <div class="max-w-7xl mx-auto">
-     <h3 class="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-16">Problem · 왜 필요할까요?</h3>
-     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Problem 1 -->
-      <div class="p-8 rounded-2xl glass-effect hover-lift" id="feature-1">
-       <div class="w-16 h-16 rounded-full mb-6 flex items-center justify-center bg-slate-900/70 text-sky-200">
-        <span class="text-2xl">⏱️</span>
-       </div>
-       <h4 class="text-2xl font-bold mb-4" id="feature-1-title">기록까지 너무 많은 단계</h4>
-       <p class="opacity-80 text-sm md:text-base" id="feature-1-desc">
-        잠금 해제 → 앱 찾기 → 열기 → 타이핑.<br />
-        이 작은 귀찮음 때문에, 대부분의 순간이 그냥 지나가 버립니다.
-       </p>
-      </div>
-
-      <!-- Problem 2 -->
-      <div class="p-8 rounded-2xl glass-effect hover-lift" id="feature-2">
-       <div class="w-16 h-16 rounded-full mb-6 flex items-center justify-center bg-slate-900/70 text-pink-200">
-        <span class="text-2xl">💭</span>
-       </div>
-       <h4 class="text-2xl font-bold mb-4" id="feature-2-title">감정은 금방 사라져요</h4>
-       <p class="opacity-80 text-sm md:text-base" id="feature-2-desc">
-        “나중에 써야지” 하는 순간,<br />
-        카페·강가·버스 안에서 느꼈던 진짜 감정은 이미 흐려져 있죠.
-       </p>
-      </div>
-
-      <!-- Problem 3 -->
-      <div class="p-8 rounded-2xl glass-effect hover-lift" id="feature-3">
-       <div class="w-16 h-16 rounded-full mb-6 flex items-center justify-center bg-slate-900/70 text-emerald-200">
-        <span class="text-2xl">📍</span>
-       </div>
-       <h4 class="text-2xl font-bold mb-4" id="feature-3-title">장소가 빠진 일기</h4>
-       <p class="opacity-80 text-sm md:text-base" id="feature-3-desc">
-        대부분의 디지털 다이어리는 텍스트만 남깁니다.<br />
-        “그때, 어디에서 느꼈는지”까지 함께 남기긴 어렵죠.
-       </p>
-      </div>
-     </div>
-    </div>
-   </section>
-
-   <!-- Solution Section (product-detail) -->
-   <section id="product-detail" class="w-full py-16 md:py-20 px-6 md:px-8">
-    <div class="max-w-7xl mx-auto">
-     <h3 class="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-16">Solution · 한 번의 태그로 완성되는 일기</h3>
-
-     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-      <!-- Visual / Mock -->
-      <div>
-       <div class="w-full aspect-square rounded-3xl glass-effect p-8 mb-4 hover-lift flex items-center justify-center">
-        <!-- 여기 SVG는 To-GoRing + 지도 느낌 mock, 필요하면 이미지로 교체해도 됨 -->
-        <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="phone-body" x1="40" y1="40" x2="240" y2="240">
-              <stop offset="0%" stop-color="#F5F5FF" />
-              <stop offset="50%" stop-color="#FFFFFF" />
-              <stop offset="100%" stop-color="#C7D2FE" />
-            </linearGradient>
-            <linearGradient id="map-path" x1="60" y1="200" x2="220" y2="80">
-              <stop offset="0%" stop-color="#38BDF8" />
-              <stop offset="100%" stop-color="#F97316" />
-            </linearGradient>
-          </defs>
-          <!-- phone -->
-          <rect x="50" y="40" width="180" height="220" rx="30" fill="url(#phone-body)" stroke="#93C5FD" stroke-width="3"/>
-          <!-- map path -->
-          <path d="M80 210C100 170 130 180 150 150C170 120 200 110 230 90" stroke="url(#map-path)" stroke-width="4" stroke-linecap="round"/>
-          <!-- pins -->
-          <circle cx="90" cy="200" r="8" fill="#0F172A"/>
-          <circle cx="150" cy="150" r="8" fill="#0F172A"/>
-          <circle cx="215" cy="95" r="8" fill="#0F172A"/>
-
-          <!-- To-GoRing tag bubble -->
-          <circle cx="140" cy="80" r="26" fill="#0F172A" opacity="0.9"/>
-          <circle cx="140" cy="80" r="18" fill="#38BDF8"/>
-          <text x="140" y="84" text-anchor="middle" fill="white" font-size="10">TAP</text>
-        </svg>
-       </div>
-
-       <p class="text-sm md:text-base opacity-70 mt-2 text-center">
-        To-GoRing를 태그하면, 앱이 자동으로 장소·시간·날씨와 함께 작은 질문을 띄워줍니다.
-       </p>
-      </div>
-
-      <!-- 설명 텍스트 -->
-      <div class="flex flex-col justify-center space-y-6">
-       <div class="inline-block px-4 py-2 rounded-full glass-effect mb-2 w-fit">
-        <span class="text-sm font-semibold">HARDWARE · To-GoRing</span>
-       </div>
-       <h4 class="text-3xl md:text-4xl font-bold mb-2" id="product-name">
-        손에 쥐는 “기록 버튼”
-       </h4>
-       <p class="text-lg md:text-xl mb-4 opacity-80 leading-relaxed" id="product-description">
-        가방, 열쇠, 에어팟에 달아두는 작은 NFC 키링.<br />
-        스마트폰에 톡- 태그하는 순간, 다이어리가 아니라 “지금 여기”가 먼저 열립니다.
-       </p>
-
-       <div class="grid grid-cols-2 gap-4 mb-6 text-sm md:text-base">
-        <div class="p-4 rounded-xl glass-effect">
-         <div class="opacity-60 mb-1">연결</div>
-         <div class="text-xl font-bold">NFC 태그 한 번</div>
-        </div>
-        <div class="p-4 rounded-xl glass-effect">
-         <div class="opacity-60 mb-1">포맷</div>
-         <div class="text-xl font-bold">마이크로 다이어리</div>
-        </div>
-        <div class="p-4 rounded-xl glass-effect">
-         <div class="opacity-60 mb-1">저장</div>
-         <div class="text-xl font-bold">장소·날씨·시간 자동</div>
-        </div>
-        <div class="p-4 rounded-xl glass-effect">
-         <div class="opacity-60 mb-1">뷰</div>
-         <div class="text-xl font-bold">피드 + 지도</div>
-        </div>
-       </div>
-
-       <div class="space-y-3 text-sm md:text-base">
-        <div class="font-semibold opacity-80">SOFTWARE · To-Go 앱</div>
-        <ul class="list-disc list-inside opacity-80 space-y-1">
-          <li>현재 위치·날씨·시간을 자동으로 붙여줍니다.</li>
-          <li>“한강이에요. 지금 듣는 노래는?” 같은 장소 기반 질문이 떠요.</li>
-          <li>하루가 피드와 지도 위에 동시에 쌓입니다.</li>
-        </ul>
-       </div>
-      </div>
-     </div>
-
-     <!-- 작은 추가 카드 -->
-     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="p-8 rounded-2xl glass-effect text-center hover-lift">
-       <div class="text-5xl mb-4">🪪</div>
-       <h5 class="text-xl font-bold mb-2">물리적 트리거</h5>
-       <p class="opacity-70 text-sm md:text-base">
-        “앱 열기”가 아니라 “태그”라는 작은 의식으로 하루가 정리됩니다.
-       </p>
-      </div>
-      <div class="p-8 rounded-2xl glass-effect text-center hover-lift">
-       <div class="text-5xl mb-4">🗺️</div>
-       <h5 class="text-xl font-bold mb-2">지도 위의 하루</h5>
-       <p class="opacity-70 text-sm md:text-base">
-        감정과 장소가 동시에 남아서, 나중에 “그날의 동선”까지 돌아볼 수 있어요.
-       </p>
-      </div>
-      <div class="p-8 rounded-2xl glass-effect text-center hover-lift">
-       <div class="text-5xl mb-4">🎮</div>
-       <h5 class="text-xl font-bold mb-2">To-Go List</h5>
-       <p class="opacity-70 text-sm md:text-base">
-        “도서관 10시 도착”처럼, 직접 가서 태그해야만 완료되는 위치 기반 할 일도 가능합니다.
-       </p>
-      </div>
-     </div>
-    </div>
-   </section>
-
-   <!-- Flow Section (stats-section) -->
-   <section class="w-full py-16 md:py-20 px-6 md:px-8" id="stats-section">
-    <div class="max-w-7xl mx-auto">
-     <h3 class="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-14">Flow · 3단계로 끝나는 기록</h3>
-     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="text-center p-8 rounded-2xl glass-effect hover-lift">
-       <div class="text-4xl md:text-5xl font-bold mb-3 gradient-text">
-        ①
-       </div>
-       <div class="text-lg md:text-xl mb-2">태그하기</div>
-       <div class="opacity-80 text-sm md:text-base">
-        “기록할 만한 순간이다” 싶을 때,<br />그냥 To-GoRing을 폰에 톡- 태그합니다.
-       </div>
-      </div>
-      <div class="text-center p-8 rounded-2xl glass-effect hover-lift">
-       <div class="text-4xl md:text-5xl font-bold mb-3 gradient-text">
-        ②
-       </div>
-       <div class="text-lg md:text-xl mb-2">짧게 답하기</div>
-       <div class="opacity-80 text-sm md:text-base">
-        앱이 열리면서, 장소 기반 질문 하나가 뜹니다.<br />
-        한 줄만 써도, 그 순간은 충분해요.
-       </div>
-      </div>
-      <div class="text-center p-8 rounded-2xl glass-effect hover-lift">
-       <div class="text-4xl md:text-5xl font-bold mb-3 gradient-text">
-        ③
-       </div>
-       <div class="text-lg md:text-xl mb-2">지도로 돌아보기</div>
-       <div class="opacity-80 text-sm md:text-base">
-        하루가 피드와 지도에 그대로 남습니다.<br />
-        “그때, 어디서, 어떻게 느꼈는지” 한눈에.
-       </div>
-      </div>
-     </div>
-    </div>
-   </section>
-
-   <!-- Team / CTA Section -->
-   <section class="w-full py-16 md:py-20 px-6 md:px-8" id="cta-section">
-    <div class="max-w-4xl mx-auto text-center p-10 md:p-12 rounded-3xl glass-effect">
-     <h3 class="text-3xl md:text-4xl font-bold mb-4">Team 12V · To-GoLing Project</h3>
-     <p class="text-base md:text-xl mb-6 opacity-85 leading-relaxed">
-       To-GoLing은 하드웨어와 소프트웨어가 만나<br />
-       “사라지기 쉬운 감정”들을 조금 더 오래 붙잡을 수 있을까? 라는 질문에서 시작된
-       프로젝트입니다.
-     </p>
-     <p class="text-sm md:text-base mb-8 opacity-75">
-       아직은 프로토타입 단계지만, NFC 키링·앱 UX·초기 유저 인터뷰를 기반으로<br />
-       “한 번의 태그”가 정말 기록 습관을 바꿀 수 있는지 실험하고 있습니다.
-     </p>
-     <div class="flex flex-col items-center gap-3">
-       <a href="mailto:hello@to-goling.app" class="px-8 py-4 rounded-full font-semibold text-base md:text-lg hover-lift bg-gradient-to-r from-sky-300 to-pink-300 text-slate-900">
-         팀 12V에게 연락하기
-       </a>
-       <span class="text-xs md:text-sm opacity-70">
-         문의 · 협업 제안 · 피드백 모두 환영합니다 :)
-       </span>
-     </div>
-    </div>
-      <!-- Meet the Team -->
-      <div class="mt-14">
-        <h4 class="text-2xl md:text-3xl font-bold mb-8">
-          Meet the Team
-        </h4>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          
-          <!-- Row 1 -->
-          <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
-            <div class="text-lg font-bold mb-1">🍒김태연</div>
-            <div class="text-sm opacity-70 mb-3">App · Frontend · Engineering</div>
-            <a href="mailto:taeyeon@to-goling.app"
-              class="text-xs opacity-80 hover:opacity-100 underline">
-              taeyeon@to-goling.app
-            </a>
-          </div>
-          
-          <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
-            <div class="text-lg font-bold mb-1">🍀정예솔</div>
-            <div class="text-sm opacity-70 mb-3">Design · Product</div>
-            <a href="mailto:member@to-goling.app"
-              class="text-xs opacity-80 hover:opacity-100 underline">
-              member@to-goling.app
-            </a>
-          </div>
-          
-          <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
-            <div class="text-lg font-bold mb-1">🥥최민수</div>
-            <div class="text-sm opacity-70 mb-3">Hardware · Prototype· Product</div>
-            <a href="mailto:member@to-goling.app"
-              class="text-xs opacity-80 hover:opacity-100 underline">
-              member@to-goling.app
-            </a>
-          </div>
-          
-          <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
-            <div class="text-lg font-bold mb-1">🌟이루다</div>
-            <div class="text-sm opacity-70 mb-3">Research · Analysis</div>
-            <a href="mailto:member@to-goling.app"
-              class="text-xs opacity-80 hover:opacity-100 underline">
-              member@to-goling.app
-            </a>
-          </div>
-          
-          <!-- Row 2 -->
-          <div class="p-6 rounded-2xl glass-effect hover-lift text-left md:col-span-1">
-            <div class="text-lg font-bold mb-1">🙃박한결</div>
-            <div class="text-sm opacity-70 mb-3">Research · Analysis</div>
-            <a href="mailto:member@to-goling.app"
-              class="text-xs opacity-80 hover:opacity-100 underline">
-              member@to-goling.app
-            </a>
-          </div>
-          
-          <div class="p-6 rounded-2xl glass-effect hover-lift text-left md:col-span-1">
-            <div class="text-lg font-bold mb-1">🧩박시진</div>
-            <div class="text-sm opacity-70 mb-3">Operation · Strategy</div>
-            <a href="mailto:member@to-goling.app"
-              class="text-xs opacity-80 hover:opacity-100 underline">
-              member@to-goling.app
-            </a>
-          </div>
-          
-          <div class="p-6 rounded-2xl glass-effect hover-lift text-left md:col-span-2">
-            <div class="text-lg font-bold mb-1">😎배병찬</div>
-            <div class="text-sm opacity-70 mb-3">Business · Strategy</div>
-            <a href="mailto:member@to-goling.app"
-              class="text-xs opacity-80 hover:opacity-100 underline">
-              member@to-goling.app
-            </a>
-          </div>
-          
+    <!-- Navigation -->
+    <nav class="w-full py-6 px-8" id="nav">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <h1 class="text-2xl md:text-3xl chrome-text tracking-widest" id="brand-name">
+          TO-GOLING
+        </h1>
+        <div class="hidden md:flex gap-8 text-sm md:text-base">
+          <a href="#features" class="hover:opacity-70 transition-opacity">Problem</a>
+          <a href="#product-detail" class="hover:opacity-70 transition-opacity">Solution</a>
+          <a href="#stats-section" class="hover:opacity-70 transition-opacity">Flow</a>
+          <a href="#cta-section" class="hover:opacity-70 transition-opacity">Team</a>
         </div>
       </div>
+    </nav>
 
+    <!-- Hero Section -->
+    <section class="w-full py-16 md:py-20 px-6 md:px-8" id="hero">
+      <!-- decorative blobs -->
+      <div class="decor decor-1"></div>
+      <div class="decor decor-2"></div>
 
-   </section>
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+        <!-- Left: Text -->
+        <div class="fade-in-up space-y-6">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect text-xs md:text-sm tracking-widest">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,1)]"></span>
+            LOCATION-BASED LIFE LOG • NFC KEYRING
+          </div>
 
-   <!-- Footer -->
-   <footer class="w-full py-8 px-6 md:px-8 border-t border-white/60" id="footer">
-    <div class="max-w-7xl mx-auto text-center opacity-70 text-xs md:text-sm">
-     <p id="footer-text">© 2024 To-GoLing · Team 12V · to-goling.app</p>
-    </div>
-   </footer>
+          <h2 class="text-4xl md:text-6xl leading-tight chrome-text" id="hero-title">
+            TAP ONCE,<br />CAPTURE THE MOMENT.
+          </h2>
+
+          <p class="text-lg md:text-xl leading-relaxed drop-shadow-sm" id="hero-subtitle">
+            NFC 키링을 스마트폰에 태그하면<br />
+            지금 이 순간의 감정·장소·시간이 바로 기록됩니다.<br />
+            번거로움 없이, 느낌이 사라지기 전에.
+          </p>
+
+          <div class="flex flex-wrap gap-4 items-center">
+            <button
+              id="cta-button"
+              onclick="document.querySelector('#stats-section').scrollIntoView({behavior:'smooth'})"
+              class="px-8 py-3 rounded-full font-semibold text-base md:text-lg hover-lift bg-gradient-to-r from-pink-300 to-sky-300 text-slate-900 shadow-lg"
+            >
+              어떻게 작동하나요 →
+            </button>
+
+            <button
+              class="px-6 py-3 rounded-full font-semibold text-sm md:text-base glass-effect hover-lift"
+              onclick="document.querySelector('#cta-section').scrollIntoView({behavior:'smooth'})"
+            >
+              팀 12V 소개 보기 ☆
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: To-GoRing visual -->
+        <div class="float-animation">
+          <div class="w-64 h-64 md:w-72 md:h-72 mx-auto rounded-3xl glass-effect flex items-center justify-center relative">
+            <!-- simple ring mock -->
+            <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="ring-body" x1="20" y1="20" x2="140" y2="140">
+                  <stop offset="0%" stop-color="#FFFFFF" />
+                  <stop offset="40%" stop-color="#E5ECFF" />
+                  <stop offset="100%" stop-color="#A9B8FF" />
+                </linearGradient>
+                <radialGradient id="ring-glow" cx="0.3" cy="0.2" r="0.8">
+                  <stop offset="0%" stop-color="#FFFFFF" />
+                  <stop offset="100%" stop-color="#8EC5FF" />
+                </radialGradient>
+              </defs>
+              <circle cx="80" cy="80" r="55" fill="url(#ring-body)" stroke="#93C5FD" stroke-width="3"/>
+              <circle cx="80" cy="80" r="30" fill="url(#ring-glow)" opacity="0.9"/>
+              <rect x="62" y="25" width="36" height="14" rx="7" fill="#0F172A" opacity="0.7"/>
+              <circle cx="80" cy="32" r="3" fill="#E5E7EB"/>
+            </svg>
+
+            <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs md:text-sm px-4 py-2 rounded-full bg-slate-900/80 text-slate-100 shadow-lg">
+              To-GoRing · 태그하면 바로 기록
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="features" class="w-full py-16 md:py-20 px-6 md:px-8">
+      <div class="max-w-7xl mx-auto">
+        <h3 class="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-16">Problem · 왜 필요할까요?</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="p-8 rounded-2xl glass-effect hover-lift" id="feature-1">
+            <div class="w-16 h-16 rounded-full mb-6 flex items-center justify-center bg-slate-900/70 text-sky-200">
+              <span class="text-2xl">⏱️</span>
+            </div>
+            <h4 class="text-2xl font-bold mb-4" id="feature-1-title">기록까지 너무 많은 단계</h4>
+            <p class="text-sm md:text-base" id="feature-1-desc">
+              잠금 해제 → 앱 찾기 → 열기 → 타이핑.<br />
+              이 작은 귀찮음 때문에, 대부분의 순간이 그냥 지나가 버립니다.
+            </p>
+          </div>
+
+          <div class="p-8 rounded-2xl glass-effect hover-lift" id="feature-2">
+            <div class="w-16 h-16 rounded-full mb-6 flex items-center justify-center bg-slate-900/70 text-pink-200">
+              <span class="text-2xl">💭</span>
+            </div>
+            <h4 class="text-2xl font-bold mb-4" id="feature-2-title">감정은 금방 사라져요</h4>
+            <p class="text-sm md:text-base" id="feature-2-desc">
+              “나중에 써야지” 하는 순간,<br />
+              카페·강가·버스 안에서 느꼈던 진짜 감정은 이미 흐려져 있죠.
+            </p>
+          </div>
+
+          <div class="p-8 rounded-2xl glass-effect hover-lift" id="feature-3">
+            <div class="w-16 h-16 rounded-full mb-6 flex items-center justify-center bg-slate-900/70 text-emerald-200">
+              <span class="text-2xl">📍</span>
+            </div>
+            <h4 class="text-2xl font-bold mb-4" id="feature-3-title">장소가 빠진 일기</h4>
+            <p class="text-sm md:text-base" id="feature-3-desc">
+              대부분의 디지털 다이어리는 텍스트만 남깁니다.<br />
+              “그때, 어디에서 느꼈는지”까지 함께 남기긴 어렵죠.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="product-detail" class="w-full py-16 md:py-20 px-6 md:px-8">
+      <div class="max-w-7xl mx-auto">
+        <h3 class="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-16">Solution · 한 번의 태그로 완성되는 일기</h3>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+          <div>
+            <div class="w-full aspect-square rounded-3xl glass-effect p-8 mb-4 hover-lift flex items-center justify-center">
+              <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="phone-body" x1="40" y1="40" x2="240" y2="240">
+                    <stop offset="0%" stop-color="#F5F5FF" />
+                    <stop offset="50%" stop-color="#FFFFFF" />
+                    <stop offset="100%" stop-color="#C7D2FE" />
+                  </linearGradient>
+                  <linearGradient id="map-path" x1="60" y1="200" x2="220" y2="80">
+                    <stop offset="0%" stop-color="#38BDF8" />
+                    <stop offset="100%" stop-color="#F97316" />
+                  </linearGradient>
+                </defs>
+                <rect x="50" y="40" width="180" height="220" rx="30" fill="url(#phone-body)" stroke="#93C5FD" stroke-width="3"/>
+                <path d="M80 210C100 170 130 180 150 150C170 120 200 110 230 90" stroke="url(#map-path)" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="90" cy="200" r="8" fill="#0F172A"/>
+                <circle cx="150" cy="150" r="8" fill="#0F172A"/>
+                <circle cx="215" cy="95" r="8" fill="#0F172A"/>
+                <circle cx="140" cy="80" r="26" fill="#0F172A" opacity="0.9"/>
+                <circle cx="140" cy="80" r="18" fill="#38BDF8"/>
+                <text x="140" y="84" text-anchor="middle" fill="white" font-size="10">TAP</text>
+              </svg>
+            </div>
+
+            <p class="text-sm md:text-base mt-2 text-center">
+              To-GoRing를 태그하면, 앱이 자동으로 장소·시간·날씨와 함께 작은 질문을 띄워줍니다.
+            </p>
+          </div>
+
+          <div class="flex flex-col justify-center space-y-6">
+            <div class="inline-block px-4 py-2 rounded-full glass-effect mb-2 w-fit">
+              <span class="text-sm font-semibold">HARDWARE · To-GoRing</span>
+            </div>
+
+            <h4 class="text-3xl md:text-4xl font-bold mb-2" id="product-name">
+              손에 쥐는 “기록 버튼”
+            </h4>
+
+            <p class="text-lg md:text-xl mb-4 leading-relaxed" id="product-description">
+              가방, 열쇠, 에어팟에 달아두는 작은 NFC 키링.<br />
+              스마트폰에 톡- 태그하는 순간, 다이어리가 아니라 “지금 여기”가 먼저 열립니다.
+            </p>
+
+            <div class="grid grid-cols-2 gap-4 mb-6 text-sm md:text-base">
+              <div class="p-4 rounded-xl glass-effect">
+                <div class="opacity-60 mb-1">연결</div>
+                <div class="text-xl font-bold">NFC 태그 한 번</div>
+              </div>
+              <div class="p-4 rounded-xl glass-effect">
+                <div class="opacity-60 mb-1">포맷</div>
+                <div class="text-xl font-bold">마이크로 다이어리</div>
+              </div>
+              <div class="p-4 rounded-xl glass-effect">
+                <div class="opacity-60 mb-1">저장</div>
+                <div class="text-xl font-bold">장소·날씨·시간 자동</div>
+              </div>
+              <div class="p-4 rounded-xl glass-effect">
+                <div class="opacity-60 mb-1">뷰</div>
+                <div class="text-xl font-bold">피드 + 지도</div>
+              </div>
+            </div>
+
+            <div class="space-y-3 text-sm md:text-base">
+              <div class="font-semibold opacity-80">SOFTWARE · To-Go 앱</div>
+              <ul class="list-disc list-inside space-y-1">
+                <li>현재 위치·날씨·시간을 자동으로 붙여줍니다.</li>
+                <li>“한강이에요. 지금 듣는 노래는?” 같은 장소 기반 질문이 떠요.</li>
+                <li>하루가 피드와 지도 위에 동시에 쌓입니다.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="p-8 rounded-2xl glass-effect text-center hover-lift">
+            <div class="text-5xl mb-4">🪪</div>
+            <h5 class="text-xl font-bold mb-2">물리적 트리거</h5>
+            <p class="text-sm md:text-base">
+              “앱 열기”가 아니라 “태그”라는 작은 의식으로 하루가 정리됩니다.
+            </p>
+          </div>
+          <div class="p-8 rounded-2xl glass-effect text-center hover-lift">
+            <div class="text-5xl mb-4">🗺️</div>
+            <h5 class="text-xl font-bold mb-2">지도 위의 하루</h5>
+            <p class="text-sm md:text-base">
+              감정과 장소가 동시에 남아서, 나중에 “그날의 동선”까지 돌아볼 수 있어요.
+            </p>
+          </div>
+          <div class="p-8 rounded-2xl glass-effect text-center hover-lift">
+            <div class="text-5xl mb-4">🎮</div>
+            <h5 class="text-xl font-bold mb-2">To-Go List</h5>
+            <p class="text-sm md:text-base">
+              “도서관 10시 도착”처럼, 직접 가서 태그해야만 완료되는 위치 기반 할 일도 가능합니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flow Section -->
+    <section class="w-full py-16 md:py-20 px-6 md:px-8" id="stats-section">
+      <div class="max-w-7xl mx-auto">
+        <h3 class="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-14">Flow · 3단계로 끝나는 기록</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-8 rounded-2xl glass-effect hover-lift">
+            <div class="text-4xl md:text-5xl font-bold mb-3 gradient-text">①</div>
+            <div class="text-lg md:text-xl mb-2">태그하기</div>
+            <div class="text-sm md:text-base">
+              “기록할 만한 순간이다” 싶을 때,<br />그냥 To-GoRing을 폰에 톡- 태그합니다.
+            </div>
+          </div>
+          <div class="text-center p-8 rounded-2xl glass-effect hover-lift">
+            <div class="text-4xl md:text-5xl font-bold mb-3 gradient-text">②</div>
+            <div class="text-lg md:text-xl mb-2">짧게 답하기</div>
+            <div class="text-sm md:text-base">
+              앱이 열리면서, 장소 기반 질문 하나가 뜹니다.<br />
+              한 줄만 써도, 그 순간은 충분해요.
+            </div>
+          </div>
+          <div class="text-center p-8 rounded-2xl glass-effect hover-lift">
+            <div class="text-4xl md:text-5xl font-bold mb-3 gradient-text">③</div>
+            <div class="text-lg md:text-xl mb-2">지도로 돌아보기</div>
+            <div class="text-sm md:text-base">
+              하루가 피드와 지도에 그대로 남습니다.<br />
+              “그때, 어디서, 어떻게 느꼈는지” 한눈에.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team / CTA Section -->
+    <section class="w-full py-16 md:py-20 px-6 md:px-8" id="cta-section">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center p-10 md:p-12 rounded-3xl glass-effect">
+          <h3 class="text-3xl md:text-4xl font-bold mb-4">Team 12V · To-GoLing Project</h3>
+          <p class="text-base md:text-xl mb-6 leading-relaxed">
+            To-GoLing은 하드웨어와 소프트웨어가 만나<br />
+            “사라지기 쉬운 감정”들을 조금 더 오래 붙잡을 수 있을까? 라는 질문에서 시작된
+            프로젝트입니다.
+          </p>
+          <p class="text-sm md:text-base mb-8">
+            아직은 프로토타입 단계지만, NFC 키링·앱 UX·초기 유저 인터뷰를 기반으로<br />
+            “한 번의 태그”가 정말 기록 습관을 바꿀 수 있는지 실험하고 있습니다.
+          </p>
+
+          <div class="flex flex-col items-center gap-3">
+            <a href="mailto:hello@to-goling.app"
+               class="px-8 py-4 rounded-full font-semibold text-base md:text-lg hover-lift bg-gradient-to-r from-sky-300 to-pink-300 text-slate-900 shadow-lg">
+              팀 12V에게 연락하기
+            </a>
+            <span class="text-xs md:text-sm opacity-70">
+              문의 · 협업 제안 · 피드백 모두 환영합니다 :)
+            </span>
+          </div>
+        </div>
+
+        <!-- Meet the Team -->
+        <div class="mt-14">
+          <h4 class="text-2xl md:text-3xl font-bold mb-8">Meet the Team</h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+            <!-- Row 1 -->
+            <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
+              <div class="text-lg font-medium mb-1">🍒김태연</div>
+              <div class="text-sm mb-3">App · Frontend · Engineering</div>
+              <a href="mailto:taeyeon@to-goling.app" class="text-xs hover:opacity-100 underline">
+                taeyeon@to-goling.app
+              </a>
+            </div>
+
+            <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
+              <div class="text-lg font-medium mb-1">🍀정예솔</div>
+              <div class="text-sm mb-3">Design · Product</div>
+              <a href="mailto:member@to-goling.app" class="text-xs hover:opacity-100 underline">
+                member@to-goling.app
+              </a>
+            </div>
+
+            <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
+              <div class="text-lg font-medium mb-1">🥥최민수</div>
+              <div class="text-sm mb-3">Hardware · Prototype · Product</div>
+              <a href="mailto:member@to-goling.app" class="text-xs hover:opacity-100 underline">
+                member@to-goling.app
+              </a>
+            </div>
+
+            <div class="p-6 rounded-2xl glass-effect hover-lift text-left">
+              <div class="text-lg font-medium mb-1">🌟이루다</div>
+              <div class="text-sm mb-3">Research · Analysis</div>
+              <a href="mailto:member@to-goling.app" class="text-xs hover:opacity-100 underline">
+                member@to-goling.app
+              </a>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="p-6 rounded-2xl glass-effect hover-lift text-left md:col-span-1">
+              <div class="text-lg font-medium mb-1">🙃박한결</div>
+              <div class="text-sm mb-3">Research · Analysis</div>
+              <a href="mailto:member@to-goling.app" class="text-xs hover:opacity-100 underline">
+                member@to-goling.app
+              </a>
+            </div>
+
+            <div class="p-6 rounded-2xl glass-effect hover-lift text-left md:col-span-1">
+              <div class="text-lg font-medium mb-1">🧩박시진</div>
+              <div class="text-sm mb-3">Operation · Strategy</div>
+              <a href="mailto:member@to-goling.app" class="text-xs hover:opacity-100 underline">
+                member@to-goling.app
+              </a>
+            </div>
+
+            <div class="p-6 rounded-2xl glass-effect hover-lift text-left md:col-span-2">
+              <div class="text-lg font-medium mb-1">😎배병찬</div>
+              <div class="text-sm mb-3">Business · Strategy</div>
+              <a href="mailto:member@to-goling.app" class="text-xs hover:opacity-100 underline">
+                member@to-goling.app
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full py-8 px-6 md:px-8 border-t border-white/60" id="footer">
+      <div class="max-w-7xl mx-auto text-center text-xs md:text-sm">
+        <p id="footer-text">© 2024 To-GoLing · Team 12V · to-goling.app</p>
+      </div>
+    </footer>
+
   </div>
 
   <script>
     const defaultConfig = {
+      // keep these for editor UI, but we won't apply backgrounds anymore
       background_color: "#0A0E27",
       surface_color: "#1A1F3A",
-      text_color: "#E8E8E8",
+      text_color: "#0b1220",
       primary_action_color: "#C0C0C0",
-      secondary_action_color: "#8B8B8B",
-      font_family: "'Black Han Sans', system-ui, -apple-system, sans-serif",
+      secondary_action_color: "#0b1220",
+      font_family: "'Pretendard'",
       font_size: 16,
       brand_name: "TO-GOLING",
       hero_title: "TAP ONCE, CAPTURE THE MOMENT.",
@@ -525,77 +574,21 @@
     };
 
     async function onConfigChange(config) {
-      const backgroundColor = config.background_color || defaultConfig.background_color;
-      const surfaceColor = config.surface_color || defaultConfig.surface_color;
       const textColor = config.text_color || defaultConfig.text_color;
-      const primaryActionColor = config.primary_action_color || defaultConfig.primary_action_color;
-      const secondaryActionColor = config.secondary_action_color || defaultConfig.secondary_action_color;
       const customFont = config.font_family || defaultConfig.font_family;
       const baseFontSize = config.font_size || defaultConfig.font_size;
-      const baseFontStack = "'Black Han Sans', system-ui, -apple-system, sans-serif";
+      const baseFontStack = "system-ui, -apple-system, sans-serif";
 
-      // Apply colors (이 부분은 elementSdk 쓸 때만 실제로 적용됨)
-      document.body.style.backgroundColor = backgroundColor;
+      // ✅ Do NOT overwrite backgrounds/gradients (sky + glass stays)
       document.body.style.color = textColor;
 
-      document.getElementById('nav').style.backgroundColor = backgroundColor;
-      document.getElementById('nav').style.color = textColor;
-
-      document.getElementById('hero').style.backgroundColor = backgroundColor;
-      document.getElementById('hero').style.color = textColor;
-
-      document.getElementById('features').style.backgroundColor = surfaceColor;
-      document.getElementById('features').style.color = textColor;
-
-      document.getElementById('cta-section').style.backgroundColor = backgroundColor;
-      document.getElementById('cta-section').style.color = textColor;
-
-      document.getElementById('footer').style.backgroundColor = surfaceColor;
-      document.getElementById('footer').style.borderTopColor = primaryActionColor;
-      document.getElementById('footer').style.color = textColor;
-
-      const ctaButtons = document.querySelectorAll('button');
-      ctaButtons.forEach(btn => {
-        btn.style.backgroundColor = primaryActionColor;
-        btn.style.color = backgroundColor;
-      });
-
-      const features = [document.getElementById('feature-1'), document.getElementById('feature-2'), document.getElementById('feature-3')];
-      features.forEach(feature => {
-        feature.style.backgroundColor = backgroundColor;
-        const icon = feature.querySelector('div');
-        if (icon) {
-          icon.style.backgroundColor = surfaceColor;
-          icon.style.color = primaryActionColor;
-        }
-      });
-
-      const links = document.querySelectorAll('nav a');
-      links.forEach(link => {
-        link.style.color = secondaryActionColor;
-      });
-
-      // Apply fonts
+      // Apply body font only (headlines are forced by CSS selectors)
       document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
-      document.getElementById('brand-name').style.fontFamily = `${customFont}, ${baseFontStack}`;
-      document.getElementById('hero-title').style.fontFamily = `${customFont}, ${baseFontStack}`;
-      document.getElementById('hero-subtitle').style.fontFamily = `${customFont}, ${baseFontStack}`;
 
-      // Apply font sizes
+      // Apply font sizes (safe ones)
       document.getElementById('brand-name').style.fontSize = `${baseFontSize * 1.5}px`;
       document.getElementById('hero-title').style.fontSize = `${baseFontSize * 2.8}px`;
       document.getElementById('hero-subtitle').style.fontSize = `${baseFontSize * 1.25}px`;
-
-      const featureTitles = document.querySelectorAll('[id$="-title"]');
-      featureTitles.forEach(title => {
-        title.style.fontSize = `${baseFontSize * 1.4}px`;
-      });
-
-      const featureDescs = document.querySelectorAll('[id$="-desc"]');
-      featureDescs.forEach(desc => {
-        desc.style.fontSize = `${baseFontSize * 0.95}px`;
-      });
-
       document.getElementById('footer-text').style.fontSize = `${baseFontSize * 0.875}px`;
 
       // Apply text content
@@ -603,12 +596,14 @@
       document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
       document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
       document.getElementById('cta-button').textContent = config.cta_button || defaultConfig.cta_button;
+
       document.getElementById('feature-1-title').textContent = config.feature_1_title || defaultConfig.feature_1_title;
       document.getElementById('feature-1-desc').textContent = config.feature_1_desc || defaultConfig.feature_1_desc;
       document.getElementById('feature-2-title').textContent = config.feature_2_title || defaultConfig.feature_2_title;
       document.getElementById('feature-2-desc').textContent = config.feature_2_desc || defaultConfig.feature_2_desc;
       document.getElementById('feature-3-title').textContent = config.feature_3_title || defaultConfig.feature_3_title;
       document.getElementById('feature-3-desc').textContent = config.feature_3_desc || defaultConfig.feature_3_desc;
+
       document.getElementById('product-name').textContent = config.product_name || defaultConfig.product_name;
       document.getElementById('product-description').textContent = config.product_description || defaultConfig.product_description;
       document.getElementById('footer-text').textContent = config.footer_text || defaultConfig.footer_text;
@@ -616,43 +611,7 @@
 
     function mapToCapabilities(config) {
       return {
-        recolorables: [
-          {
-            get: () => config.background_color || defaultConfig.background_color,
-            set: (value) => {
-              config.background_color = value;
-              window.elementSdk.setConfig({ background_color: value });
-            }
-          },
-          {
-            get: () => config.surface_color || defaultConfig.surface_color,
-            set: (value) => {
-              config.surface_color = value;
-              window.elementSdk.setConfig({ surface_color: value });
-            }
-          },
-          {
-            get: () => config.text_color || defaultConfig.text_color,
-            set: (value) => {
-              config.text_color = value;
-              window.elementSdk.setConfig({ text_color: value });
-            }
-          },
-          {
-            get: () => config.primary_action_color || defaultConfig.primary_action_color,
-            set: (value) => {
-              config.primary_action_color = value;
-              window.elementSdk.setConfig({ primary_action_color: value });
-            }
-          },
-          {
-            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
-            set: (value) => {
-              config.secondary_action_color = value;
-              window.elementSdk.setConfig({ secondary_action_color: value });
-            }
-          }
-        ],
+        recolorables: [],
         borderables: [],
         fontEditable: {
           get: () => config.font_family || defaultConfig.font_family,
@@ -703,13 +662,10 @@
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
     });
   </script>
 
-  <!-- (원래 템플릿에 있던 Cloudflare 스크립트는 굳이 필요 없어서 제거해도 됨) -->
- </body>
+</body>
 </html>
